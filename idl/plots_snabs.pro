@@ -81,6 +81,8 @@ xticks=nxticks, xtickv=xtickvalues, yticks=nyticks, ytickv=ytickvalues, xticknam
 oploterror, host.dm15_array[*,4], host.appmag_array[*,f]-host.dm_best_array, host.dm15err_array[*,4], sqrt(host.appmagerr_array[*,f]^2.0+host.dm_best_err_array^2.0),  linestyle=2, psym=6, symsize=symsize, color=cgcolor(colors[f]), errcolor=cgcolor(colors[f]), charsize=1.0, /NoErase, XTickformat='(A1)'
 
 
+;for n=0, n_elements(host.SNname_array)-1 do print, host.SNname_array[n], host.appmag_array[n,1]-host.dm_best_array[n]
+
 dm15=[0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7]
 dm15abs=0.672*(dm15-1.1)+0.633*(dm15-1.1)^2.0-19.0
 

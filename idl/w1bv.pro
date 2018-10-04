@@ -39,9 +39,14 @@ nuvb_array=make_array(n_elements(normal),value=' ')
 nuvr_array=make_array(n_elements(normal),value=' ')
 milne_array=make_array(n_elements(normal),value=' ')
 
+stritcolor_array=make_array(n_elements(normal),value=' ')
+
 readcol,"swiftspectralist.txt",swiftspectra,format='A',/silent
 readcol,"hstspectralist.txt",hstspectra,format='A',/silent
 
+;readcol, 'Stritzinger_2018_redblue.txt', SN, Host, Redshift, EBV_MW, EBV_host, t_first, t_rise, DeltamB15, pm, dmerr, M_B, pm2, mberr, SpectralType, Color, References, format='(A, A, F, F, A, F, F, F, F, F, A, F, F, A, F, A, A, A, A)'
+
+readcol, 'Stritzinger_2018_redblue.txt', strit_SNname, strit_Host, strit_Redshift, strit_EBV_MW, strit_EBV_host, pm3, strit_ebvhosterr, strit_t_first, strit_t_rise, strit_DeltamB15, pm, dmerr, strit_M_B, pm2, strit_mberr, strit_Spectralcode, strit_SpectralType, strit_Color, References, format='(A, A, A, A, A,A,A,A,A,A, A, A, A, A, A, A, A, A, A)', comment='#'
 
 milnenuvb=['SN2011ia','SN2011fe','SN2011by','SN2008hv','SN2008Q']
 milnenuvr=['SN2015F','SN2013gy','SN2013gs','SN2013ex','SN2013cs','SN2012hr', 'SN2011im','SN2008ec','SN2007co','SN2007af','SN2005df','SN2005cf']
@@ -64,11 +69,12 @@ for n=0, n_elements(host.snname_array[normal]) -1 do begin
 	bpeak_err_array[*,n]=host.bpeakappmagerr_array[normal[n],*]
 	;for n=0,n_elements(normal)-1 do print, host.snname_array[normal[n]], w1vbluest_array[*,n], host.dm15_array[normal[n],4], firstepoch_array[n]
 
-
 	swiftindex=where(swiftspectra eq SNname)
-	hstindex  =where(hstspectra eq SNname)
+	hstindex=where(hstspectra eq SNname)
 	if swiftindex[0] ne -1 then swiftspectra_array[n]='swift'
 	if hstindex[0] ne -1 then hstspectra_array[n]='hst'
+	stritindex=where(strit_snname eq SNname)	
+	if stritindex[0] ne -1 then stritcolor_array[n]=strit_color[stritindex]
 
 	muvbindex  =where(milnemuvb eq SNname)
 	nuvbindex  =where(milnenuvb eq SNname)
@@ -76,13 +82,14 @@ for n=0, n_elements(host.snname_array[normal]) -1 do begin
 	if nuvbindex[0] ne -1 then milne_array[n]='nuvb'
 	if muvbindex[0] ne -1 then milne_array[n]='muvb'
 	if nuvrindex[0] ne -1 then milne_array[n]='nuvr'
-
-
 endfor
 
 
 hst=where(hstspectra_array eq 'hst')
 swift=where(swiftspectra_array eq 'swift')
+stritred=where(stritcolor_array eq 'red')
+stritblue=where(stritcolor_array eq 'blue')
+
 
 muvb=where(milne_array eq 'muvb')
 nuvb=where(milne_array eq 'nuvb')
@@ -144,6 +151,12 @@ restore, 'SN2011fe_redbolmags161.sav'
 ;  extinction laws model=0 rv=3.1, 1 1.7  , model 2 smc, model 3 CSLMC
 ; plot, epoch, feredmags[1,0,*,0]
 febpeak=where(min(feredmags[4,0,*,0]) eq feredmags[4,0,*,0],count)
+
+; print, ((feredmags[2,10,febpeak,0]-feredmags[5,10,febpeak,0])-(feredmags[2,0,febpeak,0]-feredmags[5,0,febpeak,0]))/((feredmags[4,10,febpeak,0]-feredmags[5,10,febpeak,0])-(feredmags[4,0,febpeak,0]-feredmags[5,0,febpeak,0]))
+
+;print, ((feredmags[2,10,febpeak,1]-feredmags[5,10,febpeak,1])-(feredmags[2,0,febpeak,1]-feredmags[5,0,febpeak,1]))/((feredmags[4,10,febpeak,1]-feredmags[5,10,febpeak,1])-(feredmags[4,0,febpeak,1]-feredmags[5,0,febpeak,1]))
+;print, ((feredmags[2,10,febpeak,2]-feredmags[5,10,febpeak,2])-(feredmags[2,0,febpeak,2]-feredmags[5,0,febpeak,2]))/((feredmags[4,10,febpeak,2]-feredmags[5,10,febpeak,2])-(feredmags[4,0,febpeak,2]-feredmags[5,0,febpeak,2]))
+;print, ((feredmags[2,10,febpeak,3]-feredmags[5,10,febpeak,3])-(feredmags[2,0,febpeak,3]-feredmags[5,0,febpeak,3]))/((feredmags[4,10,febpeak,3]-feredmags[5,10,febpeak,3])-(feredmags[4,0,febpeak,3]-feredmags[5,0,febpeak,3]))
 
 cgplot, charsize=1, feredmags[4,*,febpeak,3]-feredmags[5,*,febpeak,3], feredmags[2,*,febpeak,3]-feredmags[5,*,febpeak,3], xrange=[-0.15,0.3], yrange=[0.8,2.2], ystyle=1, xstyle=1, ytitle='(w1-v)!BB!Lpeak', $ 
 xtitle=' !A (b-v)!NBpeak   ', $
@@ -211,6 +224,51 @@ pos=[0.7,0.45], /norm, charsize=0.8, box=1
 device, /close
 SET_PLOT, 'X'
 spawn, 'open bpeak_m2w1vw1v_spectra.eps'
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+plotfilename = 'bpeak_w1vbv_strit.eps'
+
+SET_PLOT, 'PS'
+
+device, filename= plotfilename, /encapsulated, xsize=xsize, ysize=ysize, $
+/tt_font, set_font='Times', font_size=fontsize
+
+restore, 'SN2011fe_redbolmags161.sav'
+; filters, ebv, epochs, laws
+;  extinction laws model=0 rv=3.1, 1 1.7  , model 2 smc, model 3 CSLMC
+; plot, epoch, feredmags[1,0,*,0]
+febpeak=where(min(feredmags[4,0,*,0]) eq feredmags[4,0,*,0],count)
+
+
+cgplot, charsize=1, feredmags[4,*,febpeak,3]-feredmags[5,*,febpeak,3], feredmags[2,*,febpeak,3]-feredmags[5,*,febpeak,3], xrange=[-0.15,0.4], yrange=[0.8,2.2], ystyle=1, xstyle=1, ytitle='(w1-v)!BB!Lpeak', $ 
+xtitle=' !A (b-v)!NBpeak   ', $
+; double subscripts falling off page
+; xtitle='!S!U (b-v) !N B !R!I peak', $
+position=[x1,y1,x2,y2], linestyle=0, color=black
+;  not getting this to work
+;xyouts, 0.02, 0.5, '(b-v) !R!I B peak'
+
+oplot, feredmags[4,*,febpeak,2]-feredmags[5,*,febpeak,2], feredmags[2,*,febpeak,2]-feredmags[5,*,febpeak,2], linestyle=1
+oplot, feredmags[4,*,febpeak,1]-feredmags[5,*,febpeak,1], feredmags[2,*,febpeak,1]-feredmags[5,*,febpeak,1], linestyle=2
+oplot, feredmags[4,*,febpeak,0]-feredmags[5,*,febpeak,0], feredmags[2,*,febpeak,0]-feredmags[5,*,febpeak,0], linestyle=3
+
+;;;;;;;;;;;;;;;;;
+oploterror, bpeak_array[4,*]-bpeak_array[5,*], bpeak_array[2,*]-bpeak_array[5,*], sqrt(bpeak_err_array[4,*]^2.0+bpeak_err_array[5,*]^2.0), sqrt(bpeak_err_array[2,*]^2.0+bpeak_err_array[5,*]^2.0), symsize=0.3, psym=15
+
+cgoplot, bpeak_array[4,stritred]-bpeak_array[5,stritred], bpeak_array[2,stritred]-bpeak_array[5,stritred], psym=16, symsize=1, color='red'
+
+cgoplot, bpeak_array[4,stritblue]-bpeak_array[5,stritblue], bpeak_array[2,stritblue]-bpeak_array[5,stritblue], psym=46, symsize=1.2, color='blue'
+
+;xyouts, bpeak_array[4,hst]-bpeak_array[5,hst] - 0.06, bpeak_array[2,hst]-bpeak_array[5,hst]+0.02, host.snname_array[normal[hst]], charsize=0.5
+;xyouts, bpeak_array[4,swift]-bpeak_array[5,swift] - 0.06, bpeak_array[2,swift]-bpeak_array[5,swift]+0.02, host.snname_array[normal[swift]], charsize=0.5
+
+al_legend, ['Strit+18 red','Strit+18 blue'], psym=[16,46], color=['red','blue'], symsize=[1,1.2], $
+pos=[0.5,0.45], /norm, charsize=0.8, box=1
+
+device, /close
+SET_PLOT, 'X'
+spawn, 'open bpeak_w1vbv_strit.eps'
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 

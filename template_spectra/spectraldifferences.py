@@ -107,9 +107,6 @@ wavelength10_array=w1_wave
 
 norm_indices=np.logical_and(wavelength10_array < 5560,wavelength10_array > 5400).nonzero()
 
-print(norm_indices)
-
-print(wavelength10_array[norm_indices])
 
 fe_restflux10 = np.interp(wavelength10_array,fe_restwave, fe_smoothflux)
 by_restflux10 = np.interp(wavelength10_array,by_restwave, by_smoothflux) 
@@ -124,6 +121,26 @@ erp_restflux10_norm = erp_restflux10 / np.mean(erp_restflux10[norm_indices])
 feby=fe_restflux10_norm / by_restflux10_norm
 feerp=fe_restflux10_norm / erp_restflux10_norm
 
+byfe=by_restflux10_norm / fe_restflux10_norm
+erpfe=erp_restflux10_norm / fe_restflux10_norm
+
+
+
+optical_indices=(wavelength10_array > 5555).nonzero()
+faruv_indices=(wavelength10_array < 1675).nonzero()
+
+
+feby[optical_indices]=1.0
+feerp[optical_indices]=1.0
+byfe[optical_indices]=1.0
+erpfe[optical_indices]=1.0
+
+feby[faruv_indices]=3.0
+feerp[faruv_indices]=10.0
+byfe[faruv_indices]=0.3
+erpfe[faruv_indices]=0.1
+
+
 
 #plt.plot(wavelength10_array,fe_restflux10_norm)
 #plt.plot(wavelength10_array,feby)
@@ -136,7 +153,13 @@ feerp=fe_restflux10_norm / erp_restflux10_norm
 
 plt.plot(wavelength10_array,feby)
 plt.plot(wavelength10_array,feerp)
-plt.axis([0,6000,0,9])
+plt.axis([1500,6000,0,9])
+plt.show(block=True)
+
+
+plt.plot(wavelength10_array,byfe)
+plt.plot(wavelength10_array,erpfe)
+plt.axis([1500,6000,0,1.1])
 plt.show(block=True)
 
 

@@ -11,7 +11,7 @@ iPTF13ebh	NGC890	0.01327	0.067	0.07 +or- 0.02	56607.9	14.8	1.76 +or- 0.02	-18.95
 ASASSN-14lp	NGC4666	0.00510	0.021	0.35 +or- 0.01	56998.5	16.7	0.80 +or- 0.05	-19.36 +or- 0.60	SS,91T-like	blue	(9)	
 SN2015F	NGC2442	0.00489	0.175	0.16 +or- 0.03	57088.4	18.5	1.25 +or- 0.05	-19.47 +or- 0.27	CN,normal	red	(10)	
 SN2016bln	NGC5221	0.02328	0.028	0.05 +or- 0.03	57481.6	17.9	0.85 +or- 0.05	-19.20 +or- 0.40	SS,normal/91T-like	blue	(11)	
-MUSSES1604D	cdots	0.11737	0.026	cdots	cdots	cdots	57481.8	22.4	1.00 +or- 0.07	-18.80 +or- 0.40	BL,HV	red	(12)	
+#MUSSES1604D	cdots	0.11737	0.026	cdots	cdots	cdots	57481.8	22.4	1.00 +or- 0.07	-18.80 +or- 0.40	BL,HV	red	(12)	
 SN2017cbv NGC5643 	0.00400	0.150	cdots	cdots	cdots	57821.9	18.3	1.06 +or- 0.05	-20.04 +or- 0.60	SS,91T-like	blue	(13)
 # readcol, 'Stritzinger_2018_redblue.txt', SN, Host, Redshift, EBV_MW, EBV_host, t_first, t_rise, DeltamB15, pm, dmerr, M_B, pm2, mberr, SpectralType, Color, References, format='(A, A, F, F, A, F, F, F, F, F, A, F, F, A, F, A, A, A, A)'
 # readcol, 'Stritzinger_2018_redblue.txt', SN, Host, Redshift, EBV_MW, EBV_host, pm3, ebvhosterr, t_first, t_rise, DeltamB15, pm, dmerr, M_B, pm2, mberr, Spectralcode, SpectralType, Color, References, format='(A, A, A, A, A,A,A,A,A,A, A, A, A, A, A, A, A, A, A)', comment='#'

@@ -106,7 +106,7 @@ print, ' '
 
 
 
-for n=0, n_elements(snnames) -1 do print, SNNames[n],  ', ', z[n],  ', ', dm15[n],  ', ', dm15err[n],  ', ', Phase[n], ' ',  ', ', Hostnames[n],     ', ', Ebv_host[n],  ', ', Morph[n],  ', ', hubbletype_array[n],  ', ', logM[n],  ', ', logMperr[n],  ', ', logMmerr[n],    ', ', logOH[n],  ', ', logOHperr[n],  ', ', logOHmerr[n], ', ', AGNflag[n],  ', ', f2535[n],  ', ', f2535err[n],  ', ', f3025[n],  ', ', f3025err[n],  ', ', bpeak_obsmag_array[n,0],  ', ', bpeak_obsmag_array[n,1],  ', ', bpeak_obsmag_array[n,2],  ', ', bpeak_obsmag_array[n,3],  ', ', bpeak_obsmag_array[n,4],  ', ', bpeak_obsmag_array[n,5],  ', ', bpeak_obsmagerr_array[n,0],  ', ', bpeak_obsmagerr_array[n,1],  ', ', bpeak_obsmagerr_array[n,2],  ', ', bpeak_obsmagerr_array[n,3],  ', ', bpeak_obsmagerr_array[n,4],  ', ', bpeak_obsmagerr_array[n,5]
+for n=0, n_elements(snnames) -1 do print, SNNames[n],  ', ', z[n],  ', ', dm15[n],  ', ', dm15err[n],  ', ', Phase[n], ' ',  ', ', Hostnames[n],  ', ', Ebv_host[n],  ', ', Morph[n],  ', ', hubbletype_array[n],  ', ', logM[n],  ', ', logMperr[n],  ', ', logMmerr[n],    ', ', logOH[n],  ', ', logOHperr[n],  ', ', logOHmerr[n], ', ', AGNflag[n],  ', ', f2535[n],  ', ', f2535err[n],  ', ', f3025[n],  ', ', f3025err[n],  ', ', bpeak_obsmag_array[n,0],  ', ', bpeak_obsmag_array[n,1],  ', ', bpeak_obsmag_array[n,2],  ', ', bpeak_obsmag_array[n,3],  ', ', bpeak_obsmag_array[n,4],  ', ', bpeak_obsmag_array[n,5],  ', ', bpeak_obsmagerr_array[n,0],  ', ', bpeak_obsmagerr_array[n,1],  ', ', bpeak_obsmagerr_array[n,2],  ', ', bpeak_obsmagerr_array[n,3],  ', ', bpeak_obsmagerr_array[n,4],  ', ', bpeak_obsmagerr_array[n,5],     ', ', mwebv_array[n]
 
 
 

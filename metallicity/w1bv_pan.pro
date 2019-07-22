@@ -30,6 +30,10 @@ bpeak_obsmagerr_array=make_array(n_elements(snnames),6,value=!Values.F_NAN)
 bpeak_mag_array=make_array(n_elements(snnames),6,value=!Values.F_NAN)
 bpeak_magerr_array=make_array(n_elements(snnames),6,value=!Values.F_NAN)
 
+bpeak_deredmag_array=make_array(n_elements(snnames),6,value=!Values.F_NAN)
+bpeak_deredmagerr_array=make_array(n_elements(snnames),6,value=!Values.F_NAN)
+
+colorebv_array=make_array(n_elements(snnames),value=!Values.F_NAN)
 mwebv_array=make_array(n_elements(snnames),value=!Values.F_NAN)
 hubbletype_array=make_array(n_elements(snnames),/integer, value=!Values.F_NAN)
 
@@ -48,13 +52,18 @@ for n=0, n_elements(snnames) -1 do begin
 
 	if count ne -1 then bpeak_obsmag_array[n,*]=host.BPEAKAPPMAG_ARRAY[panindex,*]
 	if count ne -1 then bpeak_obsmagerr_array[n,*]=host.BPEAKAPPMAGERR_ARRAY[panindex,*]
-	if count ne -1 then mwebv_array[n]=host.av_schlafly_array[panindex]
+	if count ne -1 then mwebv_array[n]=host.av_schlafly_array[panindex]/3.1
 
 	if SNname eq 'SN2009Y'  then bpeak_obsmag_array[n,1]=18.81
 	if SNname eq 'SN2011fe' then bpeak_obsmag_array[n,3]=!Values.F_NAN
 
 	bpeak_mag_array[n,*]=bpeak_obsmag_array[n,*]-rlambda_array*mwebv_array[n]-rlambda_array*ebv_host[n]
 	bpeak_magerr_array[n,*]=sqrt(bpeak_obsmagerr_array[n,*]^2.0)
+
+	colorebv_array[n]=(bpeak_obsmag_array[n,4]-bpeak_obsmag_array[n,5])-(-0.1)
+
+	bpeak_deredmag_array[n,*]=bpeak_obsmag_array[n,*]-rlambda_array*colorebv_array[n]
+	bpeak_deredmagerr_array[n,*]= sqrt(bpeak_obsmagerr_array[n,*]^2.0) + sqrt(bpeak_obsmagerr_array[n,4]^2.0+bpeak_obsmagerr_array[n,5]^2.0)*rlambda_array
 
 
 	if strmatch(Morph[n], '*cE*') eq 1 then hubbletype_array[n] = -6 
@@ -195,8 +204,8 @@ for n=0,n_elements(snnames)-1 do print, snnames[n], bpeak_mag_array[n,4]-bpeak_m
 
 
 ohsort=sort(logoh)
-
-for n=0,n_elements(snnames)-1 do print, snnames[ohsort[n]], logoh[ohsort[n]], bpeak_mag_array[ohsort[n],4]-bpeak_mag_array[ohsort[n],5], bpeak_mag_array[ohsort[n],2]-bpeak_mag_array[ohsort[n],5]
+print, 'Name, Log OH, B-V obs, B-V, W1-B
+for n=0,n_elements(snnames)-1 do print, snnames[ohsort[n]], logoh[ohsort[n]], bpeak_obsmag_array[ohsort[n],4]-bpeak_obsmag_array[ohsort[n],5],bpeak_mag_array[ohsort[n],4]-bpeak_mag_array[ohsort[n],5], bpeak_mag_array[ohsort[n],2]-bpeak_mag_array[ohsort[n],4]
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -216,16 +225,6 @@ w1b_range=[0,2.5]
 ub_range=[-1,1]
 
 
-colorplots, xtitle='Host log(OH)', figurename='uvcolors_logoh.eps', xrange=logoh_range, xvalues=logoh, err_xhigh=logOHperr, err_xlow=-logOHmerr, bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
-
-
-colorplots, xvalues=hubbletype_array, xrange=[-6,10], xtitle='Hubble Type', figurename='uvcolors_hubbletype.eps', bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
-
-
-colorplots, xvalues=logm, xrange=[6.0, 12], err_xhigh=logMperr, err_xlow=-logMmerr, xtitle='Host log(M)', figurename='uvcolors_logm.eps', bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
-
-
-
 ;logoh_range=[8.2,9.0]
 
 ;xrange=logoh_range
@@ -236,34 +235,65 @@ colorplots, xvalues=logm, xrange=[6.0, 12], err_xhigh=logMperr, err_xlow=-logMme
 
 ;figurename='uvcolors_logoh.eps'
 
-colorplots, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range, xrange=logoh_range, xvalues=logoh, err_xhigh=logOHperr, err_xlow=-logOHmerr, xtitle='Host log(OH)', figurename='uvcolors_logoh.eps', bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array
-
 
 ;readcol, 'Pan_2019_tab1_fadded.dat', SNNames, z, dm15, dm15err, Phase, Hostnames,    Ebv_host, Morph, logM, logMperr, logMmerr,   logOH, logOHperr, logOHmerr,   AGNflag, f2535, f2535err, f3025, f3025err, $
 format='A, F, F, F, F, A, F, A, F, F, F, F, F, F, A, F, F, F, F'
 
-colorplots, figurename='uvcolors_z.eps', xtitle='Redshift', xrange=[0,0.02], xvalues=z, $
- bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
+;colorplots, figurename='uvcolors_z.eps', xtitle='Redshift', xrange=[0,0.02], xvalues=z, $
+; bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
 
 
 ; colorplots, figurename='uvcolors_phase.eps', xtitle='Phase', xrange=[-6,6], xvalues=phase, $
-bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
+;bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
 
 
 
-colorplots, xtitle='Pan f2535', figurename='uvcolors_f2535.eps', xrange=f2535, xvalues=f2535, err_xhigh=logOHperr, err_xlow=-logOHmerr, bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
+colorplots, xtitle='Pan f2535', figurename='uvcolors_f2535.eps', xrange=[0,0.3], xvalues=f2535, err_xhigh=f2535err, err_xlow=f2535err, bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
 
 
-colorplots, xtitle='Host log(OH)', figurename='uvcolors_logoh.eps', xrange=logoh_range, xvalues=logoh, err_xhigh=logOHperr, err_xlow=-logOHmerr, bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
+colorplots, xtitle='Pan f3025', figurename='uvcolors_f3025.eps', xrange=[0,1], xvalues=f3025, err_xhigh=f3025err, err_xlow=f3025err, bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
 
 
-colorplots, xtitle='Host log(OH)', figurename='uvcolors_logoh.eps', xrange=logoh_range, xvalues=logoh, err_xhigh=logOHperr, err_xlow=-logOHmerr, bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
+;colorplots, xtitle='Host EBV', figurename='uvcolors_hostebv.eps', xrange=[0,0.3], xvalues=EBV_host, bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
 
 
-colorplots, xtitle='Host log(OH)', figurename='uvcolors_logoh.eps', xrange=logoh_range, xvalues=logoh, err_xhigh=logOHperr, err_xlow=-logOHmerr, bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
+;colorplots, xtitle='Total EBV', figurename='uvcolors_totalebv.eps', xrange=[0,0.5], xvalues=EBV_host+mwebv_array, bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
+
+
+colorplots, xtitle='B - V', figurename='uvcolors_b-v.eps', xrange=[-0.5,0.6], xvalues=bpeak_mag_array[*,4]-bpeak_mag_array[*,5], bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
 
 
 
+
+;colorplots, xtitle='DM15(B)', figurename='uvcolors_dm15b.eps', xrange=[0.7,2], xvalues=dm15, err_xhigh=dm15err, err_xlow=dm15err, bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
+
+
+colorplots, xtitle='Host log(OH)', figurename='uvcolors_logoh.eps', xrange=[8.2,9], xvalues=logoh, err_xhigh=logOHperr, err_xlow=-logOHmerr, bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
+
+
+colorplots, xvalues=hubbletype_array, xrange=[-6,10], xtitle='Hubble Type', figurename='uvcolors_hubbletype.eps', bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
+
+
+colorplots, xvalues=logm, xrange=[6.0, 12], err_xhigh=logMperr, err_xlow=-logMmerr, xtitle='Host log(M)', figurename='uvcolors_logm.eps', bpeak_mag_array=bpeak_mag_array, bpeak_magerr_array=bpeak_magerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
+
+
+;;;;;;;;;  try different ebv measurement
+
+
+colorplots, xtitle='Host log(OH)', figurename='uvcolors_logoh_bv.eps', xrange=[8.2,9], xvalues=logoh, err_xhigh=logOHperr, err_xlow=-logOHmerr, bpeak_mag_array=bpeak_deredmag_array, bpeak_magerr_array=bpeak_deredmagerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
+
+
+colorplots, xvalues=hubbletype_array, xrange=[-6,10], xtitle='Hubble Type', figurename='uvcolors_hubbletype_bv.eps', bpeak_mag_array=bpeak_deredmag_array, bpeak_magerr_array=bpeak_deredmagerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
+
+
+colorplots, xvalues=logm, xrange=[6.0, 12], err_xhigh=logMperr, err_xlow=-logMmerr, xtitle='Host log(M)', figurename='uvcolors_logm_bv.eps', bpeak_mag_array=bpeak_deredmag_array, bpeak_magerr_array=bpeak_deredmagerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
+
+
+;colorplots, xvalues=bpeak_deredmag_array[*,4]-bpeak_deredmag_array[*,5], xrange=[-0.2,0], err_xhigh=sqrt(bpeak_deredmagerr_array[*,4]^2.0+bpeak_deredmagerr_array[*,5]^2.0), err_xlow=sqrt(bpeak_deredmagerr_array[*,4]^2.0+bpeak_deredmagerr_array[*,5]^2.0), xtitle='B - V', figurename='uvcolors_b-v_bv.eps', bpeak_mag_array=bpeak_deredmag_array, bpeak_magerr_array=bpeak_deredmagerr_array, m2b_range=m2b_range, w1b_range=w1b_range, ub_range=ub_range
+
+
+
+plot, ebv_host, bpeak_mag_array[*,4]-bpeak_mag_array[*,5]
 
 
 print, 'final stop'

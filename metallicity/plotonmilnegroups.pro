@@ -45,16 +45,10 @@ pro plotonmilnegroups, SNnames, plotfilename=plotfilename, absplotfilename=abspl
 
 ;plotonmilnegroups, ['SN2009ig','SN2011by', 'SN2011fe', 'SN2011iv', 'SN2012cg','SN2013dy','ASASSN-14lp','SN2015F'], plotfilename='IaUV_milne_colors.eps', absplotfilename='IaUV_milne_abs.eps' 
 
-;plotonmilnegroups, ['SN2005cf','SN2005df', 'SN2005ke','SN2008Q','SN2009Y', 'SN2009an', 'SN2009ig', 'SN2011ao','SN2011by', 'SN2011fe', 'SN2011iv', 'SN2012cg', 'SN2012fr', 'SN2012ht','SN2013aa', 'SN2013dy', 'iPTF14bdn', 'ASASSN-14lp','SN2015F', 'SN2016ccz','SN2016coj', 'SN2016ekg','SN2017cbv'], plotfilename='PanSample_colors.eps', absplotfilename='PanSample_abs.eps' 
+;plotonmilnegroups, ['SN2005cf','SN2005df', 'SN2008Q','SN2009Y', 'SN2009an', 'SN2009ig', 'SN2011ao','SN2011by', 'SN2011fe',  'SN2012cg', 'SN2012fr', 'SN2012ht','SN2013aa', 'SN2013dy', 'iPTF14bdn', 'ASASSN-14lp','SN2015F', 'SN2016ccz','SN2016ekg','SN2017cbv'], plotfilename='PanSample_colors.eps', absplotfilename='PanSample_abs.eps' 
 
-;plotonmilnegroups, ['SN2012fr', 'ASASSN-14lp', 'SN2011fe', 'SN2011ao', 'SN2011by', 'SN2012cg', 'SN2009an'], plotfilename='PanSample_lowOH_colors.eps', absplotfilename='PanSample_lowOH_abs.eps' 
-
-
-
-
-;plotonmilnegroups, ['SN2016ccz' , 'iPTF14bdn' ,'SN2009Y' , 'SN2013aa' ,'SN2016ekg' , 'SN2012ht'], plotfilename='PanSample_highOH_colors.eps', absplotfilename='PanSample_highOH_abs.eps' 
-
-
+;plotonmilnegroups, ['SN2013aa', 'SN2017cbv', 'SN2011by', 'SN2011fe'], plotfilename='IaUV_twins_colors.eps', absplotfilename='IaUV_twins_abs.eps' 
+;$open IaUV_twins_colors.eps
 
 if keyword_set(plotfilename) eq 0 then filename=SNnames[0]+'_milne_colors.eps'
 if keyword_set(absplotfilename) eq 0 then filename=SNnames[0]+'_milne_abs.eps'
@@ -71,9 +65,7 @@ shortcolors=['red','pink','powder blue','royal blue']
 
 xrange=[-15.0,35.0]
 yrangew1v=[-0.5,3.5]
-yrangew1b=[0.0,3.0]
 yrangem2w1=[0,4.5]
-yrangem2b=[2,6.0]
 
 w1absrange=[-12.0,-21.0]
 m2absrange=[-11.0,-20.0]
@@ -100,6 +92,7 @@ colors=colors[0:nSNe-1]
 !y.thick = 2
 !z.thick = 2
 xsize = 8.8
+xsize = 16
 wall = 0.03
 margin=0.16
 a = xsize/8.8 - (margin + wall)
@@ -120,6 +113,8 @@ y2 = y1 + b*8.8/ysize
 y3 = y2 + wall*8.8/ysize
 y4 = y3 + b*8.8/ysize
 yc = y4 + wall*8.8/ysize
+
+x2=0.8
 
 xdata=[0,1,2,3]
 ydata=[2,3,4,5]
@@ -158,7 +153,7 @@ for n=0,n_elements(SNnames)-1 do begin
 	pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat',   dt=dt
 
 
-	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fitsB15.sav'
+	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fits16.sav'
 
 	if file_test(fitsfilename) eq 1 then  begin
 		restore, fitsfilename, verbose=0
@@ -166,6 +161,32 @@ for n=0,n_elements(SNnames)-1 do begin
 	endif else begin
 		Bpeaktime=dt.bb[0,where(dt.bb[1,*] eq min(dt.bb[1,*],/nan))]
 	endelse
+
+;;;;;;
+
+
+		if SNname eq 'SN2005cf' or SNname eq 'SN2005df' or  SNname eq 'SN2011fe'  or  SNname eq 'SN2013aa'   or  SNname eq 'SN2011iv' then begin
+
+			groundbbfile='$SOUSA/grounddata/'+SNname+'_bb_ground.dat'
+
+			readcol,groundbbfile,bbmjd, bbmag, bbmagerr,/silent
+
+			dt.mag_array[4,*]=interpol(bbmag,bbmjd,dt.time_array)
+			dt.magerr_array[4,*]=interpol(bbmagerr,bbmjd,dt.time_array)
+
+			groundvvfile='$SOUSA/grounddata/'+SNname+'_vv_ground.dat'
+
+			readcol,groundvvfile,vvmjd, vvmag, vvmagerr,/silent
+
+			dt.mag_array[5,*]=interpol(vvmag,vvmjd,dt.time_array)
+			dt.magerr_array[5,*]=interpol(vvmagerr,vvmjd,dt.time_array)
+
+		endif
+
+;;;;;;;
+
+
+
 
 
 	if finite(Bpeaktime) eq 0 then Bpeaktime=dt.vv[0,where(dt.vv[1,*] eq min(dt.vv[1,*],/nan))]
@@ -196,7 +217,7 @@ xticks=nxticks, xtickv=xtickvalues, yticks=nyticks, ytickv=ytickvalues, xticknam
 ;axis, xaxis=1, xminor=1, xticklen=xticklen,  xrange=xrange, xstyle=1, xticks=nxticks, xtickv=xtickvalues ;, xtickname=replicate(' ',nxticks+1)
 
 
-al_legend, SNnames, psym=symbols, color=colors, position=[14.5,2], background='white', charsize=0.8
+al_legend, SNnames, psym=symbols, color=colors, position=[0.8,y2+y2-y1], /norm, background='white', charsize=0.8
 
 
 
@@ -232,13 +253,16 @@ xminor=1, yminor=1, xticklen=xticklen, yticklen=yticklen, $
 xticks=nxticks, xtickv=xtickvalues, yticks=nyticks, ytickv=ytickvalues
 
 
+
+
 for n=0,n_elements(SNnames)-1 do begin
 	SNname=SNnames[n]
 	print, SNname
 
 	pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat',   dt=dt
 
-	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fitsB15.sav'
+
+	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fits16.sav'
 
 	if file_test(fitsfilename) eq 1 then  begin
 		restore, fitsfilename, verbose=0
@@ -246,9 +270,38 @@ for n=0,n_elements(SNnames)-1 do begin
 	endif else begin
 		Bpeaktime=dt.bb[0,where(dt.bb[1,*] eq min(dt.bb[1,*],/nan))]
 	endelse
+
+;;;;;;
+
+
+		if SNname eq 'SN2005cf' or SNname eq 'SN2005df' or  SNname eq 'SN2011fe'  or  SNname eq 'SN2013aa'   or  SNname eq 'SN2011iv' then begin
+
+			groundbbfile='$SOUSA/grounddata/'+SNname+'_bb_ground.dat'
+
+			readcol,groundbbfile,bbmjd, bbmag, bbmagerr,/silent
+
+			dt.mag_array[4,*]=interpol(bbmag,bbmjd,dt.time_array)
+			dt.magerr_array[4,*]=interpol(bbmagerr,bbmjd,dt.time_array)
+
+			groundvvfile='$SOUSA/grounddata/'+SNname+'_vv_ground.dat'
+
+			readcol,groundvvfile,vvmjd, vvmag, vvmagerr,/silent
+
+			dt.mag_array[5,*]=interpol(vvmag,vvmjd,dt.time_array)
+			dt.magerr_array[5,*]=interpol(vvmagerr,vvmjd,dt.time_array)
+
+		endif
+
+;;;;;;;
+
+
+
+
+
 	if finite(Bpeaktime) eq 0 then Bpeaktime=dt.vv[0,where(dt.vv[1,*] eq min(dt.vv[1,*],/nan))]
 
-		if keyword_set(peakdates) then Bpeaktime=peakdates[n]
+
+	if keyword_set(peakdates) then Bpeaktime=peakdates[n]
 
 	m2w1=where( finite(dt.mag_array[2,*]) eq 1 and finite(dt.mag_array[1,*]) eq 1 )
 	oploterror, dt.time_array[m2w1]-Bpeaktime[0], dt.mag_array[1,m2w1]-dt.mag_array[2,m2w1], sqrt(dt.magerr_array[2,m2w1]^2.0+dt.magerr_array[1,m2w1]^2.0), symsize=0.1
@@ -277,113 +330,6 @@ SET_PLOT, 'X'
 $open milne_bluered_colors.eps & 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;   NORMAL COLOR   ;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-SET_PLOT, 'PS'
-
-device, filename=plotfilename+'_b.eps', /encapsulated, xsize=xsize, ysize=ysize, $
-/tt_font, set_font='Times', font_size=fontsize
-
-plot, xdata, ydata, /nodata, /noerase, position=[x1,y2,x2,y2+y2-y1], $
-xtitle=' ',   ytitle='uvw1 - b', charsize=1.0, $
-xminor=1, yminor=1, xticklen=xticklen, yticklen=yticklen, $
- yrange=yrangew1b, ystyle=1, xrange=xrange, xstyle=1, $
-xticks=nxticks, xtickv=xtickvalues, yticks=nyticks, ytickv=ytickvalues, xtickname=replicate(' ',nxticks+1)
-
-
-
-
-for n=0,n_elements(SNnames)-1 do begin
-	SNname=SNnames[n]
-	print, SNname
-
-	pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat',   dt=dt
-
-
-	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fitsB15.sav'
-
-	if file_test(fitsfilename) eq 1 then  begin
-		restore, fitsfilename, verbose=0
-		Bpeaktime=combbpeakmjd
-	endif else begin
-		Bpeaktime=dt.bb[0,where(dt.bb[1,*] eq min(dt.bb[1,*],/nan))]
-	endelse
-
-
-	if finite(Bpeaktime) eq 0 then Bpeaktime=dt.vv[0,where(dt.vv[1,*] eq min(dt.vv[1,*],/nan))]
-
-
-	if keyword_set(peakdates) then Bpeaktime=peakdates[n]
-;  not sure if this works
-	w1b=where( finite(dt.mag_array[2,*]) eq 1 and finite(dt.mag_array[4,*]) eq 1 )
-	oploterror, dt.time_array[w1b]-Bpeaktime[0], dt.mag_array[2,w1b]-dt.mag_array[4,w1b], sqrt(dt.magerr_array[2,w1b]^2.0+dt.magerr_array[4,w1v]^2.0), symsize=0.1
-	cgoplot, dt.time_array[w1b]-Bpeaktime[0], dt.mag_array[2,w1b]-dt.mag_array[4,w1b], psym=symbols[n], color=colors[n], symsize=1
-
-
-endfor
-
-
-
-
-al_legend, SNnames, psym=symbols, color=colors, position=[14.5,2], background='white', charsize=0.8
-
-
-
-;;;;;;;         m2 - b
-
-print, 'moving on to m2-b'
-
-
-
-;;;;;;;;;;;;;;;;;
-
-plot, xdata, ydata, /nodata, /noerase, position=[x1,y1,x2,y2], $
-xtitle='Days from Bpeak',   ytitle='uvm2 - b', charsize=1.0, $
-xminor=1, yminor=1, xticklen=xticklen, yticklen=yticklen, $
- yrange=yrangem2b, ystyle=1, xrange=xrange, xstyle=1, $
-xticks=nxticks, xtickv=xtickvalues, yticks=nyticks, ytickv=ytickvalues
-
-
-for n=0,n_elements(SNnames)-1 do begin
-	SNname=SNnames[n]
-	print, SNname
-
-	pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat',   dt=dt
-
-	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fitsB15.sav'
-
-	if file_test(fitsfilename) eq 1 then  begin
-		restore, fitsfilename, verbose=0
-		Bpeaktime=combbpeakmjd
-	endif else begin
-		Bpeaktime=dt.bb[0,where(dt.bb[1,*] eq min(dt.bb[1,*],/nan))]
-	endelse
-	if finite(Bpeaktime) eq 0 then Bpeaktime=dt.vv[0,where(dt.vv[1,*] eq min(dt.vv[1,*],/nan))]
-
-		if keyword_set(peakdates) then Bpeaktime=peakdates[n]
-
-	m2b=where( finite(dt.mag_array[4,*]) eq 1 and finite(dt.mag_array[1,*]) eq 1 )
-	oploterror, dt.time_array[m2b]-Bpeaktime[0], dt.mag_array[1,m2b]-dt.mag_array[4,m2b], sqrt(dt.magerr_array[4,m2b]^2.0+dt.magerr_array[1,m2b]^2.0), symsize=0.1
-
-	cgoplot, dt.time_array[m2b]-Bpeaktime[0], dt.mag_array[1,m2b]-dt.mag_array[4,m2b], psym=symbols[n], color=colors[n], symsize=1.0
-
-
-endfor
-
-
-
-;;;;;;;;;;;;;;;;;
-
-;, SNnames,   psym=symbols, symsize=1.0, color=colors, $
-;pos=[0.68,0.6], /norm, charsize=0.8, box=1, background='white'
-
-device, /close
-SET_PLOT, 'X'
-
-
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -406,14 +352,15 @@ xticks=nxticks, xtickv=xtickvalues, yticks=nyticks, ytickv=ytickvalues
 
 
 
+
 for n=0,n_elements(shortnormallist)-1 do begin
 	SNname=shortnormallist[n]
 	print, SNname
-index=where(host.snname_array eq SNname)
 
 	pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat',   dt=dt
 
-	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fitsB15.sav'
+
+	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fits16.sav'
 
 	if file_test(fitsfilename) eq 1 then  begin
 		restore, fitsfilename, verbose=0
@@ -421,13 +368,48 @@ index=where(host.snname_array eq SNname)
 	endif else begin
 		Bpeaktime=dt.bb[0,where(dt.bb[1,*] eq min(dt.bb[1,*],/nan))]
 	endelse
+
+;;;;;;
+
+
+		if SNname eq 'SN2005cf' or SNname eq 'SN2005df' or  SNname eq 'SN2011fe'  or  SNname eq 'SN2013aa'   or  SNname eq 'SN2011iv' then begin
+
+			groundbbfile='$SOUSA/grounddata/'+SNname+'_bb_ground.dat'
+
+			readcol,groundbbfile,bbmjd, bbmag, bbmagerr,/silent
+
+			dt.mag_array[4,*]=interpol(bbmag,bbmjd,dt.time_array)
+			dt.magerr_array[4,*]=interpol(bbmagerr,bbmjd,dt.time_array)
+
+			groundvvfile='$SOUSA/grounddata/'+SNname+'_vv_ground.dat'
+
+			readcol,groundvvfile,vvmjd, vvmag, vvmagerr,/silent
+
+			dt.mag_array[5,*]=interpol(vvmag,vvmjd,dt.time_array)
+			dt.magerr_array[5,*]=interpol(vvmagerr,vvmjd,dt.time_array)
+
+		endif
+
+;;;;;;;
+
+
+
+
+
 	if finite(Bpeaktime) eq 0 then Bpeaktime=dt.vv[0,where(dt.vv[1,*] eq min(dt.vv[1,*],/nan))]
 
+
+	if keyword_set(peakdates) then Bpeaktime=peakdates[n]
+
+index=where(host.snname_array eq SNname)
 
 
 	mu_best=host.dm_best_array[index]
 	mu_best_err=host.dm_best_err_array[index]
 	mu_best_ref=host.dm_best_ref_array[index]
+
+
+	print, SNname, ' mu ', mu_best
 
 vvgood=where( finite(dt.vv[1,*]) eq 1 )
 
@@ -436,14 +418,14 @@ vvgood=where( finite(dt.vv[1,*]) eq 1 )
 endfor
 
 
-for n=0,n_elements(SNnames)-1 do begin
-	SNname=SNnames[n]
+for n=0,n_elements(shortnormallist)-1 do begin
+	SNname=shortnormallist[n]
 	print, SNname
 index=where(host.snname_array eq SNname)
 
 	pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat',   dt=dt
 
-	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fitsB15.sav'
+	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fits16.sav'
 
 	if file_test(fitsfilename) eq 1 then  begin
 		restore, fitsfilename, verbose=0
@@ -454,6 +436,8 @@ index=where(host.snname_array eq SNname)
 	if finite(Bpeaktime) eq 0 then Bpeaktime=dt.vv[0,where(dt.vv[1,*] eq min(dt.vv[1,*],/nan))]
 
 	if keyword_set(peakdates) then Bpeaktime=peakdates[n]
+
+	index=where(host.snname_array eq SNname)
 
 	mu_best=host.dm_best_array[index]
 	mu_best_err=host.dm_best_err_array[index]
@@ -485,14 +469,15 @@ xticks=nxticks, xtickv=xtickvalues, yticks=nyticks, ytickv=ytickvalues, xticknam
 
 
 
+
 for n=0,n_elements(shortnormallist)-1 do begin
 	SNname=shortnormallist[n]
 	print, SNname
-index=where(host.snname_array eq SNname)
 
 	pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat',   dt=dt
 
-	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fitsB15.sav'
+
+	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fits16.sav'
 
 	if file_test(fitsfilename) eq 1 then  begin
 		restore, fitsfilename, verbose=0
@@ -500,8 +485,38 @@ index=where(host.snname_array eq SNname)
 	endif else begin
 		Bpeaktime=dt.bb[0,where(dt.bb[1,*] eq min(dt.bb[1,*],/nan))]
 	endelse
+
+;;;;;;
+
+
+		if SNname eq 'SN2005cf' or SNname eq 'SN2005df' or  SNname eq 'SN2011fe'  or  SNname eq 'SN2013aa'   or  SNname eq 'SN2011iv' then begin
+
+			groundbbfile='$SOUSA/grounddata/'+SNname+'_bb_ground.dat'
+
+			readcol,groundbbfile,bbmjd, bbmag, bbmagerr,/silent
+
+			dt.mag_array[4,*]=interpol(bbmag,bbmjd,dt.time_array)
+			dt.magerr_array[4,*]=interpol(bbmagerr,bbmjd,dt.time_array)
+
+			groundvvfile='$SOUSA/grounddata/'+SNname+'_vv_ground.dat'
+
+			readcol,groundvvfile,vvmjd, vvmag, vvmagerr,/silent
+
+			dt.mag_array[5,*]=interpol(vvmag,vvmjd,dt.time_array)
+			dt.magerr_array[5,*]=interpol(vvmagerr,vvmjd,dt.time_array)
+
+		endif
+
+;;;;;;;
+
+
+
 	if finite(Bpeaktime) eq 0 then Bpeaktime=dt.vv[0,where(dt.vv[1,*] eq min(dt.vv[1,*],/nan))]
 
+
+	if keyword_set(peakdates) then Bpeaktime=peakdates[n]
+
+index=where(host.snname_array eq SNname)
 
 	mu_best=host.dm_best_array[index]
 	mu_best_err=host.dm_best_err_array[index]
@@ -521,7 +536,7 @@ index=where(host.snname_array eq SNname)
 
 	pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat',   dt=dt
 
-	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fitsB15.sav'
+	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fits16.sav'
 
 	if file_test(fitsfilename) eq 1 then  begin
 		restore, fitsfilename, verbose=0
@@ -532,6 +547,10 @@ index=where(host.snname_array eq SNname)
 	if finite(Bpeaktime) eq 0 then Bpeaktime=dt.vv[0,where(dt.vv[1,*] eq min(dt.vv[1,*],/nan))]
 
 	if keyword_set(peakdates) then Bpeaktime=peakdates[n]
+
+	index=where(host.snname_array eq SNname)
+
+
 
 	mu_best=host.dm_best_array[index]
 	mu_best_err=host.dm_best_err_array[index]
@@ -554,20 +573,57 @@ xticks=nxticks, xtickv=xtickvalues, yticks=nyticks, ytickv=ytickvalues, xticknam
 
 
 
+
+
 for n=0,n_elements(shortnormallist)-1 do begin
 	SNname=shortnormallist[n]
 	print, SNname
-index=where(host.snname_array eq SNname)
 
 	pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat',   dt=dt
 
-	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fitsB15.sav'
 
-	if file_test(fitsfilename) eq 1 then  restore, fitsfilename, verbose=0
-	if file_test(fitsfilename) eq 1 then  Bpeaktime=combbpeakmjd
-	if file_test(fitsfilename) eq 0 then  Bpeaktime=dt.bb[0,where(dt.bb[1,*] eq min(dt.bb[1,*],/nan))]
-	
+	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fits16.sav'
+
+	if file_test(fitsfilename) eq 1 then  begin
+		restore, fitsfilename, verbose=0
+		Bpeaktime=combbpeakmjd
+	endif else begin
+		Bpeaktime=dt.bb[0,where(dt.bb[1,*] eq min(dt.bb[1,*],/nan))]
+	endelse
+	Bpeaktime=Bpeaktime[0]
+;;;;;;
+
+
+		if SNname eq 'SN2005cf' or SNname eq 'SN2005df' or  SNname eq 'SN2011fe'  or  SNname eq 'SN2013aa'   or  SNname eq 'SN2011iv' then begin
+
+			groundbbfile='$SOUSA/grounddata/'+SNname+'_bb_ground.dat'
+
+			readcol,groundbbfile,bbmjd, bbmag, bbmagerr,/silent
+
+			dt.mag_array[4,*]=interpol(bbmag,bbmjd,dt.time_array)
+			dt.magerr_array[4,*]=interpol(bbmagerr,bbmjd,dt.time_array)
+
+			groundvvfile='$SOUSA/grounddata/'+SNname+'_vv_ground.dat'
+
+			readcol,groundvvfile,vvmjd, vvmag, vvmagerr,/silent
+
+			dt.mag_array[5,*]=interpol(vvmag,vvmjd,dt.time_array)
+			dt.magerr_array[5,*]=interpol(vvmagerr,vvmjd,dt.time_array)
+
+		endif
+
+;;;;;;;
+
+
+
+
+
 	if finite(Bpeaktime) eq 0 then Bpeaktime=dt.vv[0,where(dt.vv[1,*] eq min(dt.vv[1,*],/nan))]
+
+
+	if keyword_set(peakdates) then Bpeaktime=peakdates[n]
+
+	index=where(host.snname_array eq SNname)
 
 
 	mu_best=host.dm_best_array[index]
@@ -581,14 +637,16 @@ m2good=where( finite(dt.m2[1,*]) eq 1 )
 endfor
 
 
+
+
 for n=0,n_elements(SNnames)-1 do begin
 	SNname=SNnames[n]
 	print, SNname
-index=where(host.snname_array eq SNname)
 
 	pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat',   dt=dt
 
-	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fitsB15.sav'
+
+	fitsfilename='~/Desktop/Dropbox/SN/SOUSA/fitting/'+SNname+'_6fits16.sav'
 
 	if file_test(fitsfilename) eq 1 then  begin
 		restore, fitsfilename, verbose=0
@@ -596,9 +654,41 @@ index=where(host.snname_array eq SNname)
 	endif else begin
 		Bpeaktime=dt.bb[0,where(dt.bb[1,*] eq min(dt.bb[1,*],/nan))]
 	endelse
+
+;;;;;;
+
+
+		if SNname eq 'SN2005cf' or SNname eq 'SN2005df' or  SNname eq 'SN2011fe'  or  SNname eq 'SN2013aa'   or  SNname eq 'SN2011iv' then begin
+
+			groundbbfile='$SOUSA/grounddata/'+SNname+'_bb_ground.dat'
+
+			readcol,groundbbfile,bbmjd, bbmag, bbmagerr,/silent
+
+			dt.mag_array[4,*]=interpol(bbmag,bbmjd,dt.time_array)
+			dt.magerr_array[4,*]=interpol(bbmagerr,bbmjd,dt.time_array)
+
+			groundvvfile='$SOUSA/grounddata/'+SNname+'_vv_ground.dat'
+
+			readcol,groundvvfile,vvmjd, vvmag, vvmagerr,/silent
+
+			dt.mag_array[5,*]=interpol(vvmag,vvmjd,dt.time_array)
+			dt.magerr_array[5,*]=interpol(vvmagerr,vvmjd,dt.time_array)
+
+		endif
+
+;;;;;;;
+
+
+
+
+
 	if finite(Bpeaktime) eq 0 then Bpeaktime=dt.vv[0,where(dt.vv[1,*] eq min(dt.vv[1,*],/nan))]
 
+
 	if keyword_set(peakdates) then Bpeaktime=peakdates[n]
+
+	index=where(host.snname_array eq SNname)
+
 
 	mu_best=host.dm_best_array[index]
 	mu_best_err=host.dm_best_err_array[index]

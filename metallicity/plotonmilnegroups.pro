@@ -1,50 +1,5 @@
 pro plotonmilnegroups, SNnames, plotfilename=plotfilename, absplotfilename=absplotfilename, peakdates=peakdates
 
-;plotonmilnegroups, ['SN2007cq','SN2011dn', 'SN2012cg','iPTF14bdn'], plotfilename='Ia91T_milne_colors.eps', absplotfilename='Ia91T_milne_abs.eps'
-;plotonmilnegroups, ['SN2005hk', 'SN2008A', 'SN2012Z'], plotfilename='Iax_milne_colors.eps', absplotfilename='Iax_milne_abs.eps'
-;plotonmilnegroups, ['SN2005ke','SN2008hs','SN2009gf','SN2010ko','SN2010cr','iPTF13ebh','SN2014bv','SN2012ij'], plotfilename='Ia91bg_milne_colors.eps', absplotfilename='Ia91bg_milne_abs.eps'
-
-;plotonmilnegroups, ['iPTF13dge','SN2013dy','SN2013aa','SN2012fr','SN2011hb','LSQ11ot','PTF10icb','SN2009ig'], plotfilename='Iabroad_milne_colors.eps', absplotfilename='Iabroad_milne_abs.eps' 
-
-;plotonmilnegroups, ['SN2011aa','SN2011de'], plotfilename='IaUV_milne_colors.eps', absplotfilename='IaUV_milne_abs.eps' 
-;plotonmilnegroups, ['SN2008ec'], plotfilename='SN2008ec_milne_colors.eps', absplotfilename='SN2008ec_milne_abs.eps' 
-
-;plotonmilnegroups, ['SN2016ccj','SN2009dc','SN2012dn','LSQ12gdj'], plotfilename='IaSC_colors.eps', absplotfilename='IaSC_abs.eps' 
-
-;plotonmilnegroups, ['SN2011de','ASASSN-15rq','SN2010gp','SN2009Y'], plotfilename='IaSC_colors.eps', absplotfilename='IaSC_abs.eps' 
-
-;plotonmilnegroups, ['SN2011de','ASASSN-15rq','SN2013cs','SN2009Y'], plotfilename='IaHVboth_colors.eps', absplotfilename='IaHVboth_abs.eps' 
-
-;plotonmilnegroups, ['SN2011de','ASASSN-15rq','SN2010ev','SN2009Y'], plotfilename='IaHVboth_colors.eps', absplotfilename='IaHVboth_abs.eps' 
-
-
-
-;plotonmilnegroups, ['SN2018oh'], plotfilename='SN2018oh_milne_colors.eps', absplotfilename='SN2018oh_milne_abs.eps' , peakdates=[58163.0]
-
-
-;plotonmilnegroups, ['SN2018aoz'], plotfilename='SN2018aoz_milne_colors.eps', absplotfilename='SN2018aoz_milne_abs.eps' , peakdates=[58225.0]
-;plotonmilnegroups, ['ASASSN-14dc'], plotfilename='IaCSM_milne_colors.eps', absplotfilename='IaCSM_milne_abs.eps' 
-
-;plotonmilnegroups, ['SN2005cf','SN2007af', 'SN2011by','SN2011fe'], plotfilename='Iashortnormal_milne_colors.eps', absplotfilename='Iashortnormal_milne_abs.eps'
-
-;plotonmilnegroups, ['SN2005cf', 'SN2007af', 'SN2005df', 'SN2007co', 'SN2007cv', 'SN2007sr', 'SN2008ec', 'SN2009an','SN2011fe','SN2011by', 'SN2008Q', 'SN2008hv', 'SNF20080514002','SN2006ej'], plotfilename='Ialongnormal_milne_colors.eps', absplotfilename='Ialongnormal_milne_abs.eps'
-
-;plotonmilnegroups, ['blank'], plotfilename='Iablank_milne_colors.eps', absplotfilename='Iablank_milne_abs.eps'
-
-;plotonmilnegroups, ['iPTF14atg'], plotfilename='Ia02es_milne_colors.eps', absplotfilename='Ia02es_milne_abs.eps'
-
-;plotonmilnegroups, ['SN2016ccj','SN2009dc','SN2012dn','SN2011de'], plotfilename='IaSC_16ccj_milne_colors.eps', absplotfilename='IaSC_16ccj_milne_abs.eps' 
-
-;plotonmilnegroups, ['SN2017erp'], plotfilename='erp_milne_colors.eps', absplotfilename='erp_milne_abs.eps', peakdates=[57926.0]
-;plotonmilnegroups, ['SN2017erp','SN2009ig','SN2005cf','SN2007af'], plotfilename='erp_milne_colors.eps', absplotfilename='erp_milne_abs.eps', peakdates=[57926.0,!Values.F_NAN,!Values.F_NAN,!Values.F_NAN]
-;plotonmilnegroups, ['SN2017erp','SN2009ig'], plotfilename='erp_milne_colors.eps', absplotfilename='erp_milne_abs.eps', peakdates=[57926.0,!Values.F_NAN]
-; $open erp*eps
-;plotonmilnegroups, ['SN2017cbv'], plotfilename='cbv_milne_colors.eps', absplotfilename='cbv_milne_abs.eps'
-; $open cbv*eps
-
-
-;plotonmilnegroups, ['SN2009ig','SN2011by', 'SN2011fe', 'SN2011iv', 'SN2012cg','SN2013dy','ASASSN-14lp','SN2015F'], plotfilename='IaUV_milne_colors.eps', absplotfilename='IaUV_milne_abs.eps' 
-
 ;plotonmilnegroups, ['SN2005cf','SN2005df', 'SN2008Q','SN2009Y', 'SN2009an', 'SN2009ig', 'SN2011ao','SN2011by', 'SN2011fe',  'SN2012cg', 'SN2012fr', 'SN2012ht','SN2013aa', 'SN2013dy', 'iPTF14bdn', 'ASASSN-14lp','SN2015F', 'SN2016ccz','SN2016ekg','SN2017cbv'], plotfilename='PanSample_colors.eps', absplotfilename='PanSample_abs.eps' 
 
 ;plotonmilnegroups, ['SN2013aa', 'SN2017cbv', 'SN2011by', 'SN2011fe'], plotfilename='IaUV_twins_colors.eps', absplotfilename='IaUV_twins_abs.eps' 
@@ -63,9 +18,10 @@ blueSNlist=['SN2011fe','SN2011by', 'SN2008Q', 'SN2008hv', 'SNF20080514002','SN20
 shortnormallist=['SN2005cf','SN2007af', 'SN2011by','SN2011fe']
 shortcolors=['red','pink','powder blue','royal blue']
 
-xrange=[-15.0,35.0]
-yrangew1v=[-0.5,3.5]
+xrange=[-20.0,30.0]
+yrangew1v=[0.5,3.5]
 yrangem2w1=[0,4.5]
+yrangem2vv=[2.5,6.5]
 
 w1absrange=[-12.0,-21.0]
 m2absrange=[-11.0,-20.0]
@@ -76,13 +32,23 @@ vvabsrange=[-14.0,-23.0]
 
 colors=['blue','red','dark green','blue','red','dark green','blue','red','dark green', $
 'blue','red','dark green','blue','red','dark green','blue','red','dark green','blue','red','dark green','blue','red','dark green','blue','red','dark green','blue','red','dark green','blue','red','dark green' ] 
+colors=['black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black','black' ] 
 symnum=[14,15,16,4,5,6,9,7,11,23,25,27,29,35,37,41,14,15,16,4,5,6,9,7,11,23,25,27,29,35,37,41,14,15,16,4,5,6,9,7,11,23,25,27,29,35,37,41]
+symnum=[14,15,16,14,15,16,14,15,16,14,15,16,14,15,16,14,15,16,14,15,16,14,15,16,14,15,16,14,15,16,14,15,16,14,15,16,14,15,16,14,15,16,14,15,16]
 sizes=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+sizes=[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]
+
+lines=[0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3]
 
 nSNe=n_elements(SNnames)
 symbols=symnum[0:nSNe-1]
 sizes=sizes[0:nSNe-1]
 colors=colors[0:nSNe-1]
+lines=lines[0:nSNe-1]
+
+loadct, 11
+
+colortable=intarr(nSNe)
 
 
 ; from http://www.iluvatar.org/~dwijn/idlfigures
@@ -114,8 +80,7 @@ y3 = y2 + wall*8.8/ysize
 y4 = y3 + b*8.8/ysize
 yc = y4 + wall*8.8/ysize
 
-x2=0.8
-
+;  this was to make room for legend  x2=0.8
 xdata=[0,1,2,3]
 ydata=[2,3,4,5]
 
@@ -195,8 +160,12 @@ for n=0,n_elements(SNnames)-1 do begin
 	if keyword_set(peakdates) then Bpeaktime=peakdates[n]
 ;  not sure if this works
 	w1v=where( finite(dt.mag_array[2,*]) eq 1 and finite(dt.mag_array[5,*]) eq 1 )
-	oploterror, dt.time_array[w1v]-Bpeaktime[0], dt.mag_array[2,w1v]-dt.mag_array[5,w1v], sqrt(dt.magerr_array[2,w1v]^2.0+dt.magerr_array[5,w1v]^2.0), symsize=0.1
-	cgoplot, dt.time_array[w1v]-Bpeaktime[0], dt.mag_array[2,w1v]-dt.mag_array[5,w1v], psym=symbols[n], color=colors[n], symsize=1
+
+	colortable[n]=128+floor( (min(dt.mag_array[2,w1v]-dt.mag_array[5,w1v])-0.5)/3.0*256)
+
+
+	oploterror, dt.time_array[w1v]-Bpeaktime[0], dt.mag_array[2,w1v]-dt.mag_array[5,w1v], sqrt(dt.magerr_array[2,w1v]^2.0+dt.magerr_array[5,w1v]^2.0), symsize=0.1, linestyle=1, hatlength=0
+	cgoplot, dt.time_array[w1v]-Bpeaktime[0], dt.mag_array[2,w1v]-dt.mag_array[5,w1v], psym=symbols[n], color=colortable[n], symsize=sizes[n], linestyle=1
 
 
 ;if SNname eq 'SN2012dn' then stop
@@ -217,41 +186,23 @@ xticks=nxticks, xtickv=xtickvalues, yticks=nyticks, ytickv=ytickvalues, xticknam
 ;axis, xaxis=1, xminor=1, xticklen=xticklen,  xrange=xrange, xstyle=1, xticks=nxticks, xtickv=xtickvalues ;, xtickname=replicate(' ',nxticks+1)
 
 
-al_legend, SNnames, psym=symbols, color=colors, position=[0.8,y2+y2-y1], /norm, background='white', charsize=0.8
+; al_legend, SNnames, psym=symbols, color=colors, position=[0.8,y2+y2-y1], /norm, background='white', charsize=0.8
+
+al_legend, ['NUV-red','NUV-blue'], linestyle=[0,0], thick=20, color=['pink','powder blue'], position=[5,1.2], box=0, charsize=1.0
 
 
+;al_legend, SNnames,   psym=symbols, symsize=0.5, color=colortable, $
+;pos=[30,3.5], charsize=0.75, box=1, background='white'
 
-;;;;;;;         m2 - w1
+;;;;;;;         m2 - vv
 
-print, 'moving on to m2-w1'
-
-plot, xdata, ydata, /nodata, /noerase, position=[x1,y1,x2,y2], $
-xtitle='Days from Bpeak',   ytitle='uvm2 - uvw1', charsize=1.0, $
-xminor=1, yminor=1, xticklen=xticklen, yticklen=yticklen, $
- yrange=yrangem2w1, ystyle=1, xrange=xrange, xstyle=1, $
-xticks=nxticks, xtickv=xtickvalues, yticks=nyticks, ytickv=ytickvalues
-
-
-;;;;;;;;;;;;;;;;;
-
-cgcolorfill, redm2w1xpoly, redm2w1ypoly, color='pink'
-
-cgcolorfill, redwhitem2w1xpoly, redwhitem2w1ypoly, color=cgcolor('white')
-
-cgcolorfill, bluem2w1xpoly, bluem2w1ypoly, color='powder blue'
-
-cgcolorfill, bluewhitem2w1xpoly, bluewhitem2w1ypoly, color=cgcolor('white')
-
-
-
-;;;;;;;;;;;;;;;;;
+print, 'moving on to m2-vv'
 
 plot, xdata, ydata, /nodata, /noerase, position=[x1,y1,x2,y2], $
-xtitle='Days from Bpeak',   ytitle='uvm2 - uvw1', charsize=1.0, $
+xtitle='Days from Bpeak',   ytitle='uvm2 - v', charsize=1.0, $
 xminor=1, yminor=1, xticklen=xticklen, yticklen=yticklen, $
- yrange=yrangem2w1, ystyle=1, xrange=xrange, xstyle=1, $
+ yrange=yrangem2vv, ystyle=1, xrange=xrange, xstyle=1, $
 xticks=nxticks, xtickv=xtickvalues, yticks=nyticks, ytickv=ytickvalues
-
 
 
 
@@ -304,9 +255,10 @@ for n=0,n_elements(SNnames)-1 do begin
 	if keyword_set(peakdates) then Bpeaktime=peakdates[n]
 
 	m2w1=where( finite(dt.mag_array[2,*]) eq 1 and finite(dt.mag_array[1,*]) eq 1 )
-	oploterror, dt.time_array[m2w1]-Bpeaktime[0], dt.mag_array[1,m2w1]-dt.mag_array[2,m2w1], sqrt(dt.magerr_array[2,m2w1]^2.0+dt.magerr_array[1,m2w1]^2.0), symsize=0.1
+	m2vv=where( finite(dt.mag_array[5,*]) eq 1 and finite(dt.mag_array[1,*]) eq 1 )
+	oploterror, dt.time_array[m2vv]-Bpeaktime[0], dt.mag_array[1,m2vv]-dt.mag_array[5,m2vv], sqrt(dt.magerr_array[5,m2vv]^2.0+dt.magerr_array[1,m2vv]^2.0), symsize=0.1, linestyle=1, hatlength=0
 
-	cgoplot, dt.time_array[m2w1]-Bpeaktime[0], dt.mag_array[1,m2w1]-dt.mag_array[2,m2w1], psym=symbols[n], color=colors[n], symsize=1.0
+	cgoplot, dt.time_array[m2vv]-Bpeaktime[0], dt.mag_array[1,m2vv]-dt.mag_array[5,m2vv], psym=symbols[n], color=colortable[n], symsize=sizes[n], linestyle=1
 
 
 ;if SNname eq 'SN2012dn' then print, 'SN2012dn'
@@ -315,19 +267,15 @@ for n=0,n_elements(SNnames)-1 do begin
 endfor
 
 
-al_legend, ['NUV-red','NUV-blue'], linestyle=[0,0], thick=10, color=['pink','powder blue'], position=[0,4.5], box=0, charsize=0.8
-
 
 ;;;;;;;;;;;;;;;;;
 
-;, SNnames,   psym=symbols, symsize=1.0, color=colors, $
-;pos=[0.68,0.6], /norm, charsize=0.8, box=1, background='white'
 
 device, /close
 SET_PLOT, 'X'
 
 
-$open milne_bluered_colors.eps & 
+spawn, 'open '+plotfilename
 
 
 

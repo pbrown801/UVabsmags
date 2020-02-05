@@ -13,6 +13,7 @@ restore, 'host.sav'
 
 ;  this is the version from Brown et al. 2017 paper with Nancy Landez
 ; restore, 'nancyhost.sav'  
+
 indexcbv=where(host.snname_array eq 'SN2017cbv')
 host.dm15_array[indexcbv,4]=1.06
 host.dm15err_array[indexcbv,4]=0.1
@@ -25,7 +26,7 @@ fedm=29.04
 
 
 indexgi=where(host.snname_array eq 'SN2007gi')
-host.dm15_array[indexgi,4]=0.0
+host.dm15_array[indexgi,4]=!Values.F_NAN
 
 ; filters, ebv, epochs, laws
 ;  extinction laws model=0 rv=3.1, 1 1.7  , model 2 smc, model 3 CSLMC
@@ -39,7 +40,7 @@ host.dm15_array[indexgi,4]=0.0
  
 ia=where(host.sntype2_array eq 'Ia')
 
-readcol,"snialist.txt",swiftsnia,quality,format='A,A',/silent
+readcol,"../snialist.txt",swiftsnia,quality,format='A,A',/silent
 ;normal=swiftsnia
 
 firstepoch_array=make_array(n_elements(host.snname_array),value=!Values.F_NAN)
@@ -449,7 +450,111 @@ if hst[0] ne -1 then cgoplot, host.bpeakappmag_array[1,hst]-host.bpeakappmag_arr
 
 device, /close
 SET_PLOT, 'X'
-spawn, 'open bpeak_m2w1vw1v_hst.eps'
+;spawn, 'open bpeak_m2w1vw1v_hst.eps'
+
+
+;;;;;;;;;
+
+plotfilename = 'bpeak_m2vvw1v.eps'
+
+SET_PLOT, 'PS'
+
+device, filename= plotfilename, /encapsulated, xsize=xsize, ysize=ysize, $
+/tt_font, set_font='Times', font_size=fontsize
+
+restore, 'SN2011fe_redbolmags161.sav'
+; filters, ebv, epochs, laws
+;  extinction laws model=0 rv=3.1, 1 1.7  , model 2 smc, model 3 CSLMC
+; plot, epoch, feredmags[1,0,*,0]
+xrange=[0.5,5.5]
+yrange=[0,3]
+;cgplot, charsize=1, feredmags[1,*,febpeak,3]-feredmags[5,*,febpeak,3], feredmags[2,*,febpeak,3]-feredmags[5,*,febpeak,3], $
+cgplot, xdata, ydata, /nodata, /noerase, $
+xrange=xrange, yrange=yrange, $ 
+xtitle=' !A (m2-v)!NBpeak   ', charsize=1,  $
+ystyle=1, xstyle=1, ytitle='(w1-v)!BB!Lpeak', position=[x1,y1,x2,y2], linestyle=0, color='black'
+;oplot, feredmags[1,*,febpeak,2]-feredmags[5,*,febpeak,2], feredmags[2,*,febpeak,2]-feredmags[5,*,febpeak,2], linestyle=1
+;oplot, feredmags[1,*,febpeak,1]-feredmags[5,*,febpeak,1], feredmags[2,*,febpeak,1]-feredmags[5,*,febpeak,1], linestyle=2
+;oplot, feredmags[1,*,febpeak,0]-feredmags[5,*,febpeak,0], feredmags[2,*,febpeak,0]-feredmags[5,*,febpeak,0], linestyle=3
+
+;;;;;;;;;;;;;;;;;
+oploterror, host.bpeakappmag_array[*,1]-host.bpeakappmag_array[*,5], host.bpeakappmag_array[*,2]-host.bpeakappmag_array[*,5], sqrt(host.bpeakappmagerr_array[*,1]^2.0+host.bpeakappmagerr_array[*,5]^2.0), sqrt(host.bpeakappmagerr_array[*,2]^2.0+host.bpeakappmagerr_array[*,5]^2.0), symsize=0.3, psym=15
+
+for i=0,n_elements(colortable)-1 do  cgplots, host.bpeakappmag_array[i,1]-host.bpeakappmag_array[i,5], host.bpeakappmag_array[i,2]-host.bpeakappmag_array[i,5], psym=16, color=colortable[i], symsize=1.0
+
+
+
+oploterror, host.bpeakappmag_array[*,1]-host.bpeakappmag_array[*,5], host.bpeakappmag_array[*,2]-host.bpeakappmag_array[*,5], sqrt(host.bpeakappmagerr_array[*,1]^2.0+host.bpeakappmagerr_array[*,5]^2.0),  sqrt(host.bpeakappmagerr_array[*,2]^2.0+host.bpeakappmagerr_array[*,5]^2.0), psym=16, color='black', symsize=0.1
+
+oplot, xrange, [1.0,1.0]
+oplot, [2.7,2.7], yrange
+
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'iPTF14atg'),1]-host.bpeakappmag_array[where(host.snname_array eq 'iPTF14atg'),5]-0.3, host.bpeakappmag_array[where(host.snname_array eq 'iPTF14atg'),2]-host.bpeakappmag_array[where(host.snname_array eq 'iPTF14atg'),5] + 0.15, 'iPTF14atg', charsize=0.5
+
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2016ccj'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2016ccj'),5]-0.3, host.bpeakappmag_array[where(host.snname_array eq 'SN2016ccj'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2016ccj'),5] - 0.3, 'SN2016ccj', charsize=0.5
+
+
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15pz'),1]-host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15pz'),5]-0.0, host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15pz'),2]-host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15pz'),5] - 0.15, 'A15pz', charsize=0.5
+
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2011aa'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2011aa'),5]-0.0, host.bpeakappmag_array[where(host.snname_array eq 'SN2011aa'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2011aa'),5] + 0.05, 'SN2011aa', charsize=0.5
+
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2012dn'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2012dn'),5]-0.5, host.bpeakappmag_array[where(host.snname_array eq 'SN2012dn'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2012dn'),5] - 0.2, 'SN2012dn', charsize=0.5
+
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),1]-host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),5]+0.15, host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),2]-host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),5] - 0.3, 'LSQ12gdj', charsize=0.5
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),1]-host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),5]+0.05, host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),2]-host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),5] - 0.2, '\', charsize=0.5
+
+
+
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15rq'),1]-host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15rq'),5]-0.2, host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15rq'),2]-host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15rq'),5] - 0.25, 'A15rq', charsize=0.5
+
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2016bln'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2016bln'),5]+0.05, host.bpeakappmag_array[where(host.snname_array eq 'SN2016bln'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2016bln'),5] - 0.15, 'SN2016bln', charsize=0.5
+
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2011ay'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2011ay'),5]-0.9, host.bpeakappmag_array[where(host.snname_array eq 'SN2011ay'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2011ay'),5] + 0.05, 'SN2011ay', charsize=0.5
+
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2011ia'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2011ia'),5]+0.05, host.bpeakappmag_array[where(host.snname_array eq 'SN2011ia'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2011ia'),5] - 0.15, 'SN2011ia', charsize=0.5
+
+
+device, /close
+SET_PLOT, 'X'
+spawn, 'open bpeak_m2vvw1v.eps'
+
+;;;;;;
+;;;;;;;;;
+
+plotfilename = 'bpeak_uvvw1v.eps'
+
+SET_PLOT, 'PS'
+
+device, filename= plotfilename, /encapsulated, xsize=xsize, ysize=ysize, $
+/tt_font, set_font='Times', font_size=fontsize
+
+restore, 'SN2011fe_redbolmags161.sav'
+; filters, ebv, epochs, laws
+;  extinction laws model=0 rv=3.1, 1 1.7  , model 2 smc, model 3 CSLMC
+; plot, epoch, feredmags[1,0,*,0]
+
+cgplot, charsize=1, feredmags[3,*,febpeak,3]-feredmags[5,*,febpeak,3], feredmags[2,*,febpeak,3]-feredmags[5,*,febpeak,3], xrange=[-1.5,3], yrange=[-1,5], $ 
+xtitle=' !A (u-v)!NBpeak   ', $
+ystyle=1, xstyle=1, ytitle='(w1-v)!BB!Lpeak', position=[x1,y1,x2,y2], linestyle=0, color='black'
+oplot, feredmags[3,*,febpeak,2]-feredmags[5,*,febpeak,2], feredmags[2,*,febpeak,2]-feredmags[5,*,febpeak,2], linestyle=1
+oplot, feredmags[3,*,febpeak,1]-feredmags[5,*,febpeak,1], feredmags[2,*,febpeak,1]-feredmags[5,*,febpeak,1], linestyle=2
+oplot, feredmags[3,*,febpeak,0]-feredmags[5,*,febpeak,0], feredmags[2,*,febpeak,0]-feredmags[5,*,febpeak,0], linestyle=3
+
+;;;;;;;;;;;;;;;;;
+oploterror, host.bpeakappmag_array[*,3]-host.bpeakappmag_array[*,5], host.bpeakappmag_array[*,2]-host.bpeakappmag_array[*,5], sqrt(host.bpeakappmagerr_array[*,3]^2.0+host.bpeakappmagerr_array[*,5]^2.0), sqrt(host.bpeakappmagerr_array[*,2]^2.0+host.bpeakappmagerr_array[*,5]^2.0), symsize=0.3, psym=15
+
+for i=0,n_elements(normal)-1 do  cgplots, host.bpeakappmag_array[i,3]-host.bpeakappmag_array[i,5], host.bpeakappmag_array[i,2]-host.bpeakappmag_array[i,5], psym=16, color=colortable[i], symsize=1.0
+
+
+
+oploterror, host.bpeakappmag_array[*,3]-host.bpeakappmag_array[*,5], host.bpeakappmag_array[*,2]-host.bpeakappmag_array[*,5], sqrt(host.bpeakappmagerr_array[*,3]^2.0+host.bpeakappmagerr_array[*,5]^2.0),  sqrt(host.bpeakappmagerr_array[*,2]^2.0+host.bpeakappmagerr_array[*,5]^2.0), psym=16, color='black', symsize=0.1
+
+
+device, /close
+SET_PLOT, 'X'
+;spawn, 'open bpeak_uvvw1v.eps'
+
+;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;
 plotfilename = 'bpeak_bvw1v_hst.eps'
@@ -485,7 +590,7 @@ cgoplot, host.bpeakappmag_array[morenormalhst,4]-host.bpeakappmag_array[morenorm
 
 device, /close
 SET_PLOT, 'X'
-spawn, 'open bpeak_bvw1v_hst.eps'
+;spawn , 'open bpeak_bvw1v_hst.eps'
 
 ;;;;;;;;;;;;;;;;;;;;
 
@@ -896,7 +1001,7 @@ device, /close
 SET_PLOT, 'X'
 
 
-spawn, 'open colors_dm15b.eps'
+;spawn , 'open colors_dm15b.eps'
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -992,7 +1097,7 @@ device, /close
 SET_PLOT, 'X'
 
 
-spawn, 'open colors_dm15b_hst.eps'
+;spawn , 'open colors_dm15b_hst.eps'
 
 ;
 
@@ -1074,7 +1179,10 @@ SET_PLOT, 'X'
 
 spawn, 'open colors_dm15b_hst_bvbottom.eps'
 
-;
+order=sort(host.bpeakappmag_array[*,2]-host.bpeakappmag_array[*,5])
+; for i=0,30 do print, host.snname_array[order[i]], host.bpeakappmag_array[order[i],1]-host.bpeakappmag_array[order[i],2], host.bpeakappmag_array[order[i],2]-host.bpeakappmag_array[order[i],5]
+; for i=0,50 do print, host.snname_array[order[i]], host.bpeakappmag_array[order[i],1]-host.bpeakappmag_array[order[i],5], host.bpeakappmag_array[order[i],2]-host.bpeakappmag_array[order[i],5]
+
 
 
 print, 'final stop'

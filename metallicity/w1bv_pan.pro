@@ -24,6 +24,9 @@ f3025err[where(f3025err eq -99.0)]=!Values.F_NAN
 
 fontsize=16
 
+peak_obsmag_array=make_array(n_elements(snnames),6,value=!Values.F_NAN)
+peak_obsmagerr_array=make_array(n_elements(snnames),6,value=!Values.F_NAN)
+
 bpeak_obsmag_array=make_array(n_elements(snnames),6,value=!Values.F_NAN)
 bpeak_obsmagerr_array=make_array(n_elements(snnames),6,value=!Values.F_NAN)
 
@@ -100,6 +103,7 @@ for n=0, n_elements(snnames) -1 do begin
 	panindex=where(host.snname_array eq SNname,count)
 	if count eq 0 then panindex=!Values.F_NAN
 
+	if count eq 1 then peak_obsmag_array[n,*]=host.APPMAG_ARRAY[panindex,*]
 	if count eq 1 then bpeak_obsmag_array[n,*]=host.BPEAKAPPMAG_ARRAY[panindex,*]
 	if count eq 1 then bpeak_obsmagerr_array[n,*]=host.BPEAKAPPMAGERR_ARRAY[panindex,*]
 	if count eq 1 then mwebv_array[n]=host.av_schlafly_array[panindex]/3.1
@@ -156,7 +160,7 @@ for n=0, n_elements(snnames) -1 do begin
 		endif
 	
 
-		if SNname eq 'SN2013aa' then stop
+;		if SNname eq 'SN2013aa' then stop
 
 		colorebv_array[n]=(bpeak_obsmag_array[n,4]-bpeak_obsmag_array[n,5])-(-0.1)
 
@@ -221,8 +225,10 @@ for n=0, n_elements(snnames) -1 do print, SNNames[n],  ', ', z[n],  ', ', dm15[n
 for n=0, n_elements(snnames) -1 do print, SNNames[n],  ', ', z[n],  ', ', dm15[n],  ', ', phase_obscounts_array[n,0,2],phase_obscounts_array[n,1,2],phase_obscounts_array[n,2,2],phase_obscounts_array[n,3,2],phase_obscounts_array[n,4,2],phase_obscounts_array[n,5,2], ' ', SNNames[n]
 
 
+plot, logoh, Ebv_host-colorebv_array
 
-
+print, "difference plot"
+stop
 
 ploterror, logoh, phase_ebvredcounts_array[*,1,2]/phase_ebvredcounts_array[*,4,2], logohperr, (phase_ebvredcounts_array[*,1,2]/phase_ebvredcounts_array[*,4,2])*sqrt( (phase_ebvredcountserr_array[*,1,2]/phase_ebvredcounts_array[*,1,2])^2.0 +(phase_ebvredcountserr_array[*,4,2]/phase_ebvredcounts_array[*,4,2])^2.0   ), psym=4
 
@@ -288,6 +294,13 @@ e=0
 f1=2
 
 ploterror, logoh, phase_galredcounts_array[*,f1,e]/phase_galredcounts_array[*,4,e], logohperr, (phase_galredcounts_array[*,f1,e]/phase_galredcounts_array[*,4,e])*sqrt( (phase_galredcountserr_array[*,f1,e]/phase_galredcounts_array[*,f1,e])^2.0 +(phase_galredcountserr_array[*,4,e]/phase_galredcounts_array[*,4,e])^2.0   ), psym=4
+
+
+e=0
+f1=3
+
+ploterror, logoh, phase_galredcounts_array[*,f1,e]/phase_galredcounts_array[*,4,e], logohperr, (phase_galredcounts_array[*,f1,e]/phase_galredcounts_array[*,4,e])*sqrt( (phase_galredcountserr_array[*,f1,e]/phase_galredcounts_array[*,f1,e])^2.0 +(phase_galredcountserr_array[*,4,e]/phase_galredcounts_array[*,4,e])^2.0   ), psym=4
+
 
 e=1
 
@@ -360,7 +373,7 @@ device, filename= plotfilename, /encapsulated, xsize=xsize, ysize=ysize, $
 /tt_font, set_font='Times', font_size=fontsize
 
 
-cgplot, charsize=1, feredmags[4,*,febpeak,3]-feredmags[5,*,febpeak,3], feredmags[2,*,febpeak,3]-feredmags[5,*,febpeak,3], xrange=[-0.15,0.2], yrange=[0.8,2.0], ystyle=1, xstyle=1, ytitle='(w1-v)!BB!Lpeak', $ 
+cgplot, charsize=1, feredmags[4,*,febpeak,3]-feredmags[5,*,febpeak,3], feredmags[2,*,febpeak,3]-feredmags[5,*,febpeak,3], xrange=[-0.15,0.2], yrange=[0.8,2.0], ystyle=1, xstyle=1, ytitle='(uvw1 - v)!BB!Lpeak', $ 
 xtitle=' !A (b-v)!NBpeak   ', $
 ; double subscripts falling off page
 ; xtitle='!S!U (b-v) !N B !R!I peak', $
@@ -375,17 +388,17 @@ oplot, feredmags[4,*,febpeak,0]-feredmags[5,*,febpeak,0], feredmags[2,*,febpeak,
 ;;;;;;;;;;;;;;;;;
 ;oploterror, logM, bpeak_mag_array[*,1]-bpeak_mag_array[*,4], sqrt(logMmerr^2.0), sqrt(bpeak_magerr_array[*,1]-bpeak_maerrg_array[*,4]^2.0), symsize=0.3, psym=15
 
-cgoplot, bpeak_mag_array[where(logOH lt logOHsplit),4]-bpeak_mag_array[where(logOH lt logOHsplit),5], bpeak_mag_array[where(logOH lt logOHsplit),2]-bpeak_mag_array[where(logOH lt logOHsplit),5], psym=16, symsize=1, color='red'
+cgoplot, bpeak_mag_array[where(logOH lt logOHsplit),4]-bpeak_mag_array[where(logOH lt logOHsplit),5], bpeak_mag_array[where(logOH lt logOHsplit),2]-bpeak_mag_array[where(logOH lt logOHsplit),5], psym=9, symsize=1, color='light green'
 
-cgoplot, bpeak_mag_array[where(logOH gt logOHsplit),4]-bpeak_mag_array[where(logOH gt logOHsplit),5], bpeak_mag_array[where(logOH gt logOHsplit),2]-bpeak_mag_array[where(logOH gt logOHsplit),5], psym=46, symsize=1.2, color='blue'
+cgoplot, bpeak_mag_array[where(logOH gt logOHsplit),4]-bpeak_mag_array[where(logOH gt logOHsplit),5], bpeak_mag_array[where(logOH gt logOHsplit),2]-bpeak_mag_array[where(logOH gt logOHsplit),5], psym=46, symsize=1.2, color='dark green'
 
 
-;al_legend, ['logOH_array < 8.6','logOH_array > 8.6'], psym=[16,46], color=['red','blue'], symsize=[1,1.2], $
+;al_legend, ['log (O/H) < 8.6','log (O/H) > 8.6'], psym=[9,46], color=['light green','dark green'], symsize=[1,1.2], $
 ;pos=[0.1,2.2], charsize=0.8, box=1
 
 device, /close
 SET_PLOT, 'X'
-;spawn, 'open bpeak_w1vbv_pan_logoh.eps'
+spawn, 'open bpeak_w1vbv_pan_logoh.eps'
 
 
 
@@ -400,7 +413,7 @@ device, filename= plotfilename, /encapsulated, xsize=xsize, ysize=ysize, $
 /tt_font, set_font='Times', font_size=fontsize
 
 
-cgplot, charsize=1, feredmags[4,*,febpeak,3]-feredmags[5,*,febpeak,3], feredmags[2,*,febpeak,3]-feredmags[5,*,febpeak,3], xrange=[-0.15,0.2], yrange=[2.5,4.5], ystyle=1, xstyle=1, ytitle='(m2-v)!BB!Lpeak', $ 
+cgplot, charsize=1, feredmags[4,*,febpeak,3]-feredmags[5,*,febpeak,3], feredmags[1,*,febpeak,3]-feredmags[5,*,febpeak,3], xrange=[-0.15,0.2], yrange=[2.5,4.5], ystyle=1, xstyle=1, ytitle='(uvm2 - v)!BB!Lpeak', $ 
 xtitle=' !A (b-v)!NBpeak   ', $
 ; double subscripts falling off page
 ; xtitle='!S!U (b-v) !N B !R!I peak', $
@@ -415,13 +428,13 @@ oplot, feredmags[4,*,febpeak,0]-feredmags[5,*,febpeak,0], feredmags[1,*,febpeak,
 ;;;;;;;;;;;;;;;;;
 ;oploterror, logM, bpeak_mag_array[*,1]-bpeak_mag_array[*,4], sqrt(logMmerr^2.0), sqrt(bpeak_magerr_array[*,1]-bpeak_maerrg_array[*,4]^2.0), symsize=0.3, psym=15
 
-cgoplot, bpeak_mag_array[where(logOH lt logOHsplit),4]-bpeak_mag_array[where(logOH lt logOHsplit),5], bpeak_mag_array[where(logOH lt logOHsplit),1]-bpeak_mag_array[where(logOH lt logOHsplit),5], psym=16, symsize=1, color='red'
+cgoplot, bpeak_mag_array[where(logOH lt logOHsplit),4]-bpeak_mag_array[where(logOH lt logOHsplit),5], bpeak_mag_array[where(logOH lt logOHsplit),1]-bpeak_mag_array[where(logOH lt logOHsplit),5], psym=9, symsize=1, color='light green'
 
-cgoplot, bpeak_mag_array[where(logOH gt logOHsplit),4]-bpeak_mag_array[where(logOH gt logOHsplit),5], bpeak_mag_array[where(logOH gt logOHsplit),1]-bpeak_mag_array[where(logOH gt logOHsplit),5], psym=46, symsize=1.2, color='blue'
+cgoplot, bpeak_mag_array[where(logOH gt logOHsplit),4]-bpeak_mag_array[where(logOH gt logOHsplit),5], bpeak_mag_array[where(logOH gt logOHsplit),1]-bpeak_mag_array[where(logOH gt logOHsplit),5], psym=46, symsize=1.2, color='dark green'
 
 
-al_legend, ['logOH_array < 8.6','logOH_array > 8.6'], psym=[16,46], color=['red','blue'], symsize=[1,1.2], $
-pos=[0.02,3.2], charsize=0.8, box=1
+al_legend, ['12 + log (O/H) < 8.6','12 + log (O/H) > 8.6'], psym=[9,46], color=['light green','dark green'], symsize=[1,1.2], $
+pos=[0.008,3.03], charsize=0.8, box=1
 
 device, /close
 SET_PLOT, 'X'

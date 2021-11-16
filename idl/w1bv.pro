@@ -876,6 +876,75 @@ SET_PLOT, 'X'
 ;spawn, 'open w1v_bpeak_colors_abs_dmb15.eps'
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+SET_PLOT, 'PS'
+
+device, filename='w1v_peak_colors_abs_dmb15_nocolorbar.eps', /encapsulated, xsize=xsize, ysize=ysize, $
+/tt_font, set_font='Times', font_size=fontsize, /color
+
+xrange=[-0.2,0.2]
+nxticks=4
+                                                  
+cgplot, charsize=1, xdata, ydata, /nodata, /noerase, position=[x1,y2+y2-y1,x2,y2+y2+y2-y1-y1], $
+xrange=[dmb15low,dmb15high], yrange=[3.0,0.0], ytitle='w1!Bpeak !N-!Nv!Bpeak !N',  $
+xminor=1, yminor=1, xticklen=xticklen, yticklen=yticklen, $
+ystyle=1, xstyle=1, $
+xticks=nxticks, xtickv=xtickvalues, yticks=nyticks, ytickv=ytickvalues, xtickname=replicate(' ',nxticks+1), color='black'
+
+
+for i=0,n_elements(normal)-1 do if host.snname_array[normal[i]] ne 'SN2008Q' and  host.snname_array[normal[i]] ne 'SN2008hv'  and  host.snname_array[normal[i]] ne  'SN2011by'  and  host.snname_array[normal[i]] ne  'SN2011fe'  and  host.snname_array[normal[i]] ne  'SN2011ia' then  cgplots, host.dm15_array[normal[i],4], host.appmag_array[normal[i],2]-host.appmag_array[normal[i],5], psym=16, color=colortable[i], symsize=1.0
+
+
+cgplots, host.dm15_array[[index11ia],4], host.appmag_array[index11ia,2]-host.appmag_array[index11ia,5], psym=34, color=colortable[index11ia], symsize=1.0
+cgplots, host.dm15_array[[index11fe],4], host.appmag_array[index11fe,2]-host.appmag_array[index11fe,5], psym=46, color=colortable[index11fe], symsize=1.5
+cgplots, host.dm15_array[[index11by],4], host.appmag_array[index11by,2]-host.appmag_array[index11by,5], psym=17, color=colortable[index11by], symsize=1.0
+cgplots, host.dm15_array[[index08hv],4], host.appmag_array[index08hv,2]-host.appmag_array[index08hv,5], psym=15, color=colortable[index08hv], symsize=1.0
+cgplots, host.dm15_array[[index08Q],4],  host.appmag_array[index08Q,2] -host.appmag_array[index08Q,5],  psym=18, color=colortable[index08Q],  symsize=1.0
+
+oploterror, host.dm15_array[normal,4], host.appmag_array[*,2]-host.appmag_array[*,5], host.dm15err_array[normal,4], sqrt(host.appmagerr_array[*,2]^2.0+host.appmagerr_array[*,5]^2.0), psym=16, symsize=0.1, color='black'
+
+;;;;;;;;;;;;;;;;;;;;;;
+cgplot, charsize=1, xdata, ydata, /nodata, /noerase, position=[x1,y2,x2,y2+y2-y1], $
+ ytitle='w1!Bpeak !N- $\mu$', $
+xminor=1, yminor=1, xticklen=xticklen, yticklen=yticklen, $
+ yrange=[-15.0,-20], ystyle=1, xrange=[dmb15low,dmb15high], xstyle=1, $
+xticks=nxticks, xtickv=xtickvalues, yticks=4, ytickv=ytickvalues, xtickname=replicate(' ',nxticks+1), color='black'
+
+for i=0,n_elements(normal)-1 do if host.snname_array[normal[i]] ne 'SN2008Q' and  host.snname_array[normal[i]] ne 'SN2008hv'  and  host.snname_array[normal[i]] ne  'SN2011by'  and  host.snname_array[normal[i]] ne  'SN2011fe'  and  host.snname_array[normal[i]] ne  'SN2011ia' then  cgplots, host.dm15_array[normal[i],4], host.appmag_array[normal[i],2]-host.dm_best_array[normal[i]], psym=16, color=colortable[i], symsize=1.0
+
+cgplots, host.dm15_array[[index11ia],4], host.appmag_array[2,index11ia]-host.dm_best_array[[index11ia]], psym=34, color=colortable[index11ia], symsize=1.0
+cgplots, host.dm15_array[[index11fe],4], host.appmag_array[2,index11fe]-host.dm_best_array[[index11fe]], psym=46, color=colortable[index11fe], symsize=1.5
+cgplots, host.dm15_array[[index11by],4], host.appmag_array[2,index11by]-host.dm_best_array[[index11by]], psym=17, color=colortable[index11by], symsize=1.0
+cgplots, host.dm15_array[[index08hv],4], host.appmag_array[2,index08hv]-host.dm_best_array[[index08hv]], psym=15, color=colortable[index08hv], symsize=1.0
+cgplots, host.dm15_array[[index08Q],4],  host.appmag_array[2,index08Q]-host.dm_best_array[[index08Q]], psym=18, color=colortable[index08Q], symsize=1.0
+
+oploterror, host.dm15_array[normal,4], host.appmag_array[*,2]-host.dm_best_array[normal[*]], host.dm15err_array[normal,4], sqrt(host.dm_best_err_array[normal[*]]^2.0+host.appmagerr_array[*,5]^2.0), psym=16, symsize=0.1, color='black'
+
+cgplot, charsize=1, xdata, ydata, /nodata, /noerase, position=[x1,y1,x2,y2], $
+xtitle='!A$\Delta$ M!N15!A(B)',   ytitle='v!Bpeak !N- $\mu$',  $
+xminor=1, yminor=1, xticklen=xticklen, yticklen=yticklen, $
+ yrange=[-17.0,-20], ystyle=1, xrange=[dmb15low,dmb15high], xstyle=1, $
+xticks=nxticks, xtickv=xtickvalues, yticks=3, ytickv=ytickvalues, color='black'
+
+for i=0,n_elements(normal)-1 do if host.snname_array[normal[i]] ne 'SN2008Q' and  host.snname_array[normal[i]] ne 'SN2008hv'  and  host.snname_array[normal[i]] ne  'SN2011by'  and  host.snname_array[normal[i]] ne  'SN2011fe'  and  host.snname_array[normal[i]] ne  'SN2011ia' then  cgplots, host.dm15_array[normal[i],4], host.appmag_array[normal[i],5]-host.dm_best_array[normal[i]], psym=16, color=colortable[i], symsize=1.0
+
+cgplots, host.dm15_array[[index11ia],4], host.appmag_array[5,index11ia]-host.dm_best_array[[index11ia]], psym=34, color=colortable[index11ia], symsize=1.0
+cgplots, host.dm15_array[[index11fe],4], host.appmag_array[5,index11fe]-host.dm_best_array[[index11fe]], psym=46, color=colortable[index11fe], symsize=1.5
+cgplots, host.dm15_array[[index11by],4], host.appmag_array[5,index11by]-host.dm_best_array[[index11by]], psym=17, color=colortable[index11by], symsize=1.0
+cgplots, host.dm15_array[[index08hv],4], host.appmag_array[5,index08hv]-host.dm_best_array[[index08hv]], psym=15, color=colortable[index08hv], symsize=1.0
+cgplots, host.dm15_array[[index08Q],4],  host.appmag_array[5,index08Q] -host.dm_best_array[[index08Q]],  psym=18, color=colortable[index08Q], symsize=1.0
+
+oploterror, host.dm15_array[normal,4],  host.appmag_array[*,5]-host.dm_best_array[normal[*]], host.dm15err_array[normal,4],  sqrt(host.dm_best_err_array[normal[*]]^2.0+host.appmagerr_array[*,5]^2.0), psym=16, symsize=0.1, color='black'
+
+device, /close
+SET_PLOT, 'X'
+
+;spawn, 'open w1v_peak_colors_abs_dmb15_nocolorbar.eps'
+
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

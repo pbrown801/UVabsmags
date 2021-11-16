@@ -2,18 +2,27 @@ pro earlysne
 
 
 
-color=['royal blue', 'dark green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow', 'royal blue', 'green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow']
+color=['royal blue', 'dark green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow', 'royal blue', 'green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow','royal blue', 'dark green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow', 'royal blue', 'green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow','royal blue', 'dark green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow', 'royal blue', 'green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow','royal blue', 'dark green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow', 'royal blue', 'green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow','royal blue', 'dark green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow', 'royal blue', 'green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow','royal blue', 'dark green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow', 'royal blue', 'green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow','royal blue', 'dark green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow', 'royal blue', 'green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow','royal blue', 'dark green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow', 'royal blue', 'green', 'red', 'orange', 'pink', 'maroon', 'black', 'dodger blue', 'aqua', 'brown', 'yellow']
 
 ; SN2011fe removed because it doesn't have v band data
 
 SNlist=['iPTF14atg',  'SN2012cg', 'SN2012ij','iPTF14bdn', 'iPTF13dge', 'SN2009ig', 'SN2013gy', 'SN2012cp', 'SN2015F', 'SN2007af', 'iPTF13ebh', 'SN2008hv', 'SN2011by', 'SN2012ht', 'SN2011ao', 'SN2011B', 'SN2013dy', 'SN2013gs', 'SN2010Y', 'SN2008ec', 'SN2005ke']
 
-nprimesne=3
-
-symbol=[15,17,14,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6]
 
 
-restore, '/Users/pbrown/Desktop/Dropbox/SN/www/SwiftSN/host.sav'
+readcol, '../snnamesquality.txt', longlistnames, longlistquality, format='A,A'
+
+SNlist=longlistnames[where(longlistquality eq 'good' or longlistquality eq 'risepeak')]
+nprimesne=6
+
+SNlist=['SN2019yvq','SN2020hvf','iPTF14atg', 'SN2012cg', 'SN2012ij','iPTF14bdn',SNlist]
+
+symbol=[15,17,14,15,17,14,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6]
+
+symbol=symbol[0:n_elements(SNlist)-1]
+color=color[0:n_elements(SNlist)-1]
+
+restore, '/Users/pbrown/Desktop/SN/github/SOUSA/www/host.sav'
 
 nplots=1
 nyplots=1
@@ -70,10 +79,17 @@ SNname=SNlist[n]
 
 pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat', dt=dt
 
+SNindex=where(host.SNname_array eq SNname)
+pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat', dt=dt
+
 good=where(finite(dt.w1[1,*]) eq 1)
 maxindex=where(dt.w1[1,good] eq min(dt.w1[1,good]))
 w1maxtime=dt.w1[0,good[maxindex]]
 w1maxmag=dt.w1[1,good[maxindex]]
+maxindex=where(dt.w1[1,good] eq min(dt.w1[1,good]))
+w1maxtime=host.peaktime_array[SNindex,2]
+w1maxmag=host.appmag_array[SNindex,2]
+
 
 if SNname eq 'SN2012ij' then w1maxtime=dt.w1[0,good[maxindex+1]]
 if SNname eq 'SN2012ij' then w1maxmag=dt.w1[1,good[maxindex+1]]
@@ -134,9 +150,9 @@ $open earlysne_v.eps
 ;;;;;;;; switch others to grey
 
 
-color=['royal blue', 'dark green', 'red', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey','grey']
+color=['royal blue','black', 'dark green', 'red', 'purple', 'maroon','grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey','grey','grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey','grey','grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey','grey','grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey','grey','grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey','grey','grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey','grey','grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey','grey','grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey','grey','grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey','grey','grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey','grey','grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey', 'grey','grey']
 
-
+color=color[0:n_elements(SNlist)-1]
 
 SET_PLOT, 'PS'
 
@@ -153,17 +169,24 @@ for n=0,n_elements(snlist)-1 do begin
 
 SNname=SNlist[n]
 
+SNindex=where(host.SNname_array eq SNname)
 pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat', dt=dt
 
 good=where(finite(dt.w1[1,*]) eq 1)
 maxindex=where(dt.w1[1,good] eq min(dt.w1[1,good]))
 w1maxtime=dt.w1[0,good[maxindex]]
 w1maxmag=dt.w1[1,good[maxindex]]
+maxindex=where(dt.w1[1,good] eq min(dt.w1[1,good]))
+w1maxtime=host.peaktime_array[SNindex,2]
+w1maxmag=host.appmag_array[SNindex,2]
 
 
 
 if SNname eq 'SN2012ij' then w1maxtime=dt.w1[0,good[maxindex+1]]
 if SNname eq 'SN2012ij' then w1maxmag=dt.w1[1,good[maxindex+1]]
+
+if SNname eq 'SN2019yvq' then w1maxtime=dt.w1[0,8]
+if SNname eq 'SN2019yvq' then w1maxmag=dt.w1[1,8]
 
 
 oploterror, dt.w1[0,where(finite(dt.w1[1,*]) eq 1)]-w1maxtime[0],dt.w1[1,where(finite(dt.w1[1,*]) eq 1)]-w1maxmag[0],dt.w1[2,where(finite(dt.w1[1,*]) eq 1)], psym=-symbol[n] , color=color[n], errcolor=color[n], linestyle=0, symsize=0.5
@@ -178,10 +201,16 @@ SNname=SNlist[n]
 
 pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat', dt=dt
 
+SNindex=where(host.SNname_array eq SNname)
+pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat', dt=dt
+
 good=where(finite(dt.w1[1,*]) eq 1)
 maxindex=where(dt.w1[1,good] eq min(dt.w1[1,good]))
 w1maxtime=dt.w1[0,good[maxindex]]
 w1maxmag=dt.w1[1,good[maxindex]]
+maxindex=where(dt.w1[1,good] eq min(dt.w1[1,good]))
+w1maxtime=host.peaktime_array[SNindex,2]
+w1maxmag=host.appmag_array[SNindex,2]
 
 
 
@@ -265,10 +294,17 @@ dm=host.dm_best_array[index]
 
 pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat', dt=dt
 
+SNindex=where(host.SNname_array eq SNname)
+pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat', dt=dt
+
 good=where(finite(dt.w1[1,*]) eq 1)
 maxindex=where(dt.w1[1,good] eq min(dt.w1[1,good]))
 w1maxtime=dt.w1[0,good[maxindex]]
 w1maxmag=dt.w1[1,good[maxindex]]
+maxindex=where(dt.w1[1,good] eq min(dt.w1[1,good]))
+w1maxtime=host.peaktime_array[SNindex,2]
+w1maxmag=host.appmag_array[SNindex,2]
+
 
 if SNname eq 'SN2012ij' then w1maxtime=dt.w1[0,good[maxindex+1]]
 if SNname eq 'SN2012ij' then w1maxmag=dt.w1[1,good[maxindex+1]]
@@ -411,10 +447,17 @@ for n=0,n_elements(snlist)-1 do begin
 
 	pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat', dt=dt
 
-	good=where(finite(dt.w1[1,*]) eq 1)
-	maxindex=where(dt.w1[1,good] eq min(dt.w1[1,good]))
-	w1maxtime=dt.w1[0,good[maxindex]]
-	w1maxmag=dt.w1[1,good[maxindex]]
+SNindex=where(host.SNname_array eq SNname)
+pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat', dt=dt
+
+good=where(finite(dt.w1[1,*]) eq 1)
+maxindex=where(dt.w1[1,good] eq min(dt.w1[1,good]))
+w1maxtime=dt.w1[0,good[maxindex]]
+w1maxmag=dt.w1[1,good[maxindex]]
+maxindex=where(dt.w1[1,good] eq min(dt.w1[1,good]))
+w1maxtime=host.peaktime_array[SNindex,2]
+w1maxmag=host.appmag_array[SNindex,2]
+
 
 	if SNname eq 'SN2012ij' then w1maxtime=dt.w1[0,good[maxindex+1]]
 	if SNname eq 'SN2012ij' then w1maxmag=dt.w1[1,good[maxindex+1]]
@@ -434,10 +477,17 @@ for n=0,nprimesne-1 do begin
 
 	pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat', dt=dt
 
-	good=where(finite(dt.w1[1,*]) eq 1)
-	maxindex=where(dt.w1[1,good] eq min(dt.w1[1,good]))
-	w1maxtime=dt.w1[0,good[maxindex]]
-	w1maxmag=dt.w1[1,good[maxindex]]
+SNindex=where(host.SNname_array eq SNname)
+pjb_phot_array_B141, '$SOUSA/data/'+SNname+'_uvotB15.1.dat', dt=dt
+
+good=where(finite(dt.w1[1,*]) eq 1)
+maxindex=where(dt.w1[1,good] eq min(dt.w1[1,good]))
+w1maxtime=dt.w1[0,good[maxindex]]
+w1maxmag=dt.w1[1,good[maxindex]]
+maxindex=where(dt.w1[1,good] eq min(dt.w1[1,good]))
+w1maxtime=host.peaktime_array[SNindex,2]
+w1maxmag=host.appmag_array[SNindex,2]
+
 
 	if SNname eq 'SN2012ij' then w1maxtime=dt.w1[0,good[maxindex+1]]
 	if SNname eq 'SN2012ij' then w1maxmag=dt.w1[1,good[maxindex+1]]

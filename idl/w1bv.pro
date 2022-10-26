@@ -487,29 +487,32 @@ for i=0,n_elements(colortable)-1 do  cgplots, host.bpeakappmag_array[i,1]-host.b
 oploterror, host.bpeakappmag_array[*,1]-host.bpeakappmag_array[*,5], host.bpeakappmag_array[*,2]-host.bpeakappmag_array[*,5], sqrt(host.bpeakappmagerr_array[*,1]^2.0+host.bpeakappmagerr_array[*,5]^2.0),  sqrt(host.bpeakappmagerr_array[*,2]^2.0+host.bpeakappmagerr_array[*,5]^2.0), psym=16, color='black', symsize=0.1
 
 oplot, xrange, [1.0,1.0]
-oplot, [2.7,2.7], yrange
-
-xyouts, host.bpeakappmag_array[where(host.snname_array eq 'iPTF14atg'),1]-host.bpeakappmag_array[where(host.snname_array eq 'iPTF14atg'),5]-0.3, host.bpeakappmag_array[where(host.snname_array eq 'iPTF14atg'),2]-host.bpeakappmag_array[where(host.snname_array eq 'iPTF14atg'),5] + 0.15, 'iPTF14atg', charsize=0.5
-
-xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2016ccj'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2016ccj'),5]-0.3, host.bpeakappmag_array[where(host.snname_array eq 'SN2016ccj'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2016ccj'),5] - 0.3, 'SN2016ccj', charsize=0.5
+;oplot, [2.7,2.7], yrange
 
 
-xyouts, host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15pz'),1]-host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15pz'),5]-0.0, host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15pz'),2]-host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15pz'),5] - 0.15, 'A15pz', charsize=0.5
+print, host.snname_array[where((host.bpeakappmag_array[*,2]-host.bpeakappmag_array[*,5]) lt 1.0)]
+
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'iPTF14atg'),1]-host.bpeakappmag_array[where(host.snname_array eq 'iPTF14atg'),5]-0.8, host.bpeakappmag_array[where(host.snname_array eq 'iPTF14atg'),2]-host.bpeakappmag_array[where(host.snname_array eq 'iPTF14atg'),5] + 0.1, 'iPTF14atg-02es', charsize=0.5
+
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2016ccj'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2016ccj'),5]-0.3, host.bpeakappmag_array[where(host.snname_array eq 'SN2016ccj'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2016ccj'),5] - 0.3, 'SN2016ccj-03fg', charsize=0.5
+
+
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15pz'),1]-host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15pz'),5]-0.0, host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15pz'),2]-host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15pz'),5] - 0.15, 'A15pz-03fg', charsize=0.5
 
 xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2011aa'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2011aa'),5]-0.0, host.bpeakappmag_array[where(host.snname_array eq 'SN2011aa'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2011aa'),5] + 0.05, 'SN2011aa', charsize=0.5
 
-xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2012dn'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2012dn'),5]-0.5, host.bpeakappmag_array[where(host.snname_array eq 'SN2012dn'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2012dn'),5] - 0.2, 'SN2012dn', charsize=0.5
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2012dn'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2012dn'),5]-0.9, host.bpeakappmag_array[where(host.snname_array eq 'SN2012dn'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2012dn'),5] + 0.2, 'SN2012dn-03fg', charsize=0.5
 
-xyouts, host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),1]-host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),5]+0.15, host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),2]-host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),5] - 0.3, 'LSQ12gdj', charsize=0.5
+xyouts, host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),1]-host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),5]+0.15, host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),2]-host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),5] - 0.3, 'LSQ12gdj-91T', charsize=0.5
 xyouts, host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),1]-host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),5]+0.05, host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),2]-host.bpeakappmag_array[where(host.snname_array eq 'LSQ12gdj'),5] - 0.2, '\', charsize=0.5
 
 
 
 xyouts, host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15rq'),1]-host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15rq'),5]-0.2, host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15rq'),2]-host.bpeakappmag_array[where(host.snname_array eq 'ASASSN-15rq'),5] - 0.25, 'A15rq', charsize=0.5
 
-xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2016bln'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2016bln'),5]+0.05, host.bpeakappmag_array[where(host.snname_array eq 'SN2016bln'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2016bln'),5] - 0.15, 'SN2016bln', charsize=0.5
+;xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2016bln'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2016bln'),5]+0.05, host.bpeakappmag_array[where(host.snname_array eq 'SN2016bln'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2016bln'),5] - 0.15, 'SN2016bln', charsize=0.5
 
-xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2011ay'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2011ay'),5]-0.9, host.bpeakappmag_array[where(host.snname_array eq 'SN2011ay'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2011ay'),5] + 0.05, 'SN2011ay', charsize=0.5
+;xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2011ay'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2011ay'),5]-0.9, host.bpeakappmag_array[where(host.snname_array eq 'SN2011ay'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2011ay'),5] + 0.05, 'SN2011ay', charsize=0.5
 
 xyouts, host.bpeakappmag_array[where(host.snname_array eq 'SN2011ia'),1]-host.bpeakappmag_array[where(host.snname_array eq 'SN2011ia'),5]+0.05, host.bpeakappmag_array[where(host.snname_array eq 'SN2011ia'),2]-host.bpeakappmag_array[where(host.snname_array eq 'SN2011ia'),5] - 0.15, 'SN2011ia', charsize=0.5
 
